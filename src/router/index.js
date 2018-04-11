@@ -1,6 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
+import Movie from '@/views/movie/movie'
+import Detail from '@/views/detail/detail'
+import Category from '@/views/category/category'
+import Rank from '@/views/rank/rank'
+import Search from '@/views/search/search'
 
 Vue.use(Router)
 
@@ -8,8 +12,33 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
+      redirect: '/movie'
+    },
+    {
+      path: '/movie',
+      component: Movie,
+      children: [
+        {
+          path: ':id',
+          name: 'detail',
+          component: Detail
+        }
+      ]
+    },
+    {
+      path: '/category',
+      name: 'category',
+      component: Category
+    },
+    {
+      path: '/rank',
+      name: 'rank',
+      component: Rank
+    },
+    {
+      path: '/search',
+      name: 'search',
+      component: Search
     }
   ]
 })
