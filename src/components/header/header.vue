@@ -25,12 +25,14 @@
 
 <style lang="stylus" scoped>
   .header
+    position fixed
     width 100%
     height 56px
     color: #bbb
     display flex
     line-height 56px
     background #1c2635
+    z-index: 2
     .logo
       width 25%
       padding 15px

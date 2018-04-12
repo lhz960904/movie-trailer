@@ -2,7 +2,9 @@
   <div id="app">
     <Header></Header>
     <div class="content">
-      <router-view></router-view>
+      <keep-alive>
+        <router-view></router-view>
+      </keep-alive>
     </div>
   </div>
 </template>
@@ -15,3 +17,9 @@ export default {
   }
 }
 </script>
+
+<style lang="stylus">
+  .content
+    position absolute
+    top 56px
+</style>

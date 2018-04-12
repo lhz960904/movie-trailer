@@ -1,9 +1,16 @@
 import Vue from 'vue'
 import App from './App'
-import router from './router'
 import store from './store'
-import '@/common/styles/iconfont.styl'
+import router from './router'
+import fastClick from 'fastclick'
+import VueLazyload from 'vue-lazyload'
+import '@/common/styles/common.styl'
 
+fastClick.attach(document.body)
+Vue.use(VueLazyload, {
+  error: require('./common/images/loading.png'),
+  loading: require('./common/images/loading.png')
+})
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
