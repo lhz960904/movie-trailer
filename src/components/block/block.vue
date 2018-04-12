@@ -6,7 +6,7 @@
         <i class="icon icon-right"></i>
       </div>
     </div>
-    <div class="list">
+    <div class="list" v-show="movies">
       <div class="movie" v-for="item in movies" :key="item._id" @click="$emit('select', item._id)">
         <div class="image">
           <img v-lazy="`http://movies.kyriel.cn/${item.posterKey}`" :alt="item.title" width="100%" height="100%">
@@ -15,22 +15,29 @@
         <p class="title">{{item.title}}</p>
       </div>
     </div>
+    <loading :data="movies"></loading>
   </section>
 </template>
 
 <script>
+import Loading from '@/components/loading/loading'
 export default {
   props: {
     movies: Array,
     title: String,
     count: Number
+  },
+  components: {
+    Loading
   }
 }
 </script>
 
 <style lang="stylus" scoped>
   .block
+    position relative
     padding 15px
+    min-height 80px
     text-align center
     .header
       overflow hidden

@@ -22,4 +22,5 @@ export default {
   .content
     position absolute
     top 56px
+    width 100%
 </style>
