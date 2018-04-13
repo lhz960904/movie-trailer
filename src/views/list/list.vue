@@ -1,10 +1,101 @@
 <template>
   <transition name="list">
     <div class="list">
-      <h1>列表页</h1>
+      <header class="header">
+        <i class="icon icon-left" @click="back"></i>
+        <tabs :tab="tab" :idx="type" @select="changeTab"></tabs>
+      </header>
+      <div class="content" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="20">
+        <template v-for="movie in movies">
+          <card :movie=movie :key="movie._id" @select="gotoDetail"></card>
+        </template>
+        <div class="loading-wrapper" v-show="busy && this.max_page!==0">
+          <p>加载中...</p>
+        </div>
+      </div>
+      <loading :data="movies"></loading>
     </div>
   </transition>
 </template>
+
+<script>
+import Tabs from '@/components/tab/tab'
+import Card from '@/components/card/card'
+import Loading from '@/components/loading/loading'
+import { getMovies } from '@/api/movie'
+import { ERR_OK } from '@/api/config'
+export default {
+  data () {
+    return {
+      movies: [],
+      page: 1,
+      busy: true,
+      max_page: 0
+    }
+  },
+  created () {
+    this.tab = ['正在上映', '即将上映']
+    this._getMovies(this.$route.params.type)
+  },
+  beforeRouteEnter (to, from, next) {
+    if (+to.params.type !== 1 && +to.params.type !== 0) {
+      next('/movie')
+    }
+    next()
+  },
+  beforeRouteUpdate  (to, from, next) {
+    this.page = 1
+    this.max_page = 0
+    this.movies = []
+    this._getMovies(to.params.type)
+    next()
+  },
+  computed: {
+    type () {
+      return +this.$route.params.type === 1 ? 0 : 1
+    }
+  },
+  methods: {
+    changeTab (index) {
+      let type = index === 1 ? 0 : 1
+      this.$router.push(`/movie/all/${type}`)
+    },
+    back () {
+      this.$router.push('/movie')
+    },
+    gotoDetail (id) {
+      this.$router.push(`/movie/detail/${id}`)
+    },
+    loadMore () {
+      this.busy = true
+      this.page++
+      this._getMovies(this.$route.params.type)
+    },
+    _getMovies (type) {
+      if (this.page > this.max_page && this.max_page !== 0) {
+        this.busy = false
+        return
+      }
+      getMovies({
+        page: this.page,
+        page_size: 10,
+        type
+      }).then(res => {
+        if (res.code === ERR_OK) {
+          this.movies = this.movies.concat(res.data.movies)
+          this.max_page = this.max_page || Math.ceil(res.data.count / 10)
+          this.busy = false
+        }
+      })
+    }
+  },
+  components: {
+    Tabs,
+    Card,
+    Loading
+  }
+}
+</script>
 
 <style lang="stylus" scoped>
   .list
@@ -13,7 +104,20 @@
     bottom 0
     width 100%
     background #fff
-    z-index: 10
+    z-index 10
+    .header
+      position fixed
+      width 100%
+      height 56px
+      line-height 56px
+      color #fff
+      background #1c2635
+      .icon
+        font-size 40px
+    .content
+      .loading-wrapper
+        height 30px
+        text-align center
   .list-enter-active, .list-leave-active
     transition all .5s
   .list-enter, .list-leave-to

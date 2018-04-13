@@ -1,8 +1,8 @@
 <template>
   <div class="movie">
-    <block :movies="hot_movies" title="正在上映" :count="20" @select="selectItem" @more="goMore(1)"></block>
+    <block :movies="hot_movies" title="正在上映" :count="hot_count" @select="selectItem" @more="goMore(1)"></block>
     <spacing bgcolor="#f6f6f6" :height="10"></spacing>
-    <block :movies="hot_movies" title="即将上映" :count="60" @select="selectItem" @more="goMore(0)"></block>
+    <block :movies="comming_movies" title="即将上映" :count="comming_count" @select="selectItem" @more="goMore(0)"></block>
     <router-view></router-view>
   </div>
 </template>
@@ -16,7 +16,9 @@ export default {
   data () {
     return {
       hot_movies: [],
-      comming_movies: []
+      hot_count: 0,
+      comming_movies: [],
+      comming_count: 0
     }
   },
   created () {
@@ -40,12 +42,23 @@ export default {
       })
     },
     _getMovies () {
+      const params = {page: 1, page_size: 8}
       getMovies({
-        page: 1,
-        page_size: 8
+        ...params,
+        type: 1
       }).then((res) => {
         if (res.code === ERR_OK) {
           this.hot_movies = res.data.movies
+          this.hot_count = res.data.count
+        }
+      })
+      getMovies({
+        ...params,
+        type: 0
+      }).then((res) => {
+        if (res.code === ERR_OK) {
+          this.comming_movies = res.data.movies
+          this.comming_count = res.data.count
         }
       })
     }

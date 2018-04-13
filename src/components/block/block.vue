@@ -10,7 +10,7 @@
       <div class="movie" v-for="item in movies" :key="item._id" @click="$emit('select', item._id)">
         <div class="image">
           <img v-lazy="`http://movies.kyriel.cn/${item.posterKey}`" :alt="item.title" width="100%" height="100%">
-          <em class="rate">{{item.rate}}</em>
+          <em class="rate" v-if="item.rate !== 0">{{item.rate}}</em>
         </div>
         <p class="title">{{item.title}}</p>
       </div>
@@ -37,7 +37,7 @@ export default {
   .block
     position relative
     padding 15px
-    min-height 80px
+    min-height 100px
     text-align center
     .header
       overflow hidden

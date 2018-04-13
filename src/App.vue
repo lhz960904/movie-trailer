@@ -22,5 +22,7 @@ export default {
   .content
     position absolute
     top 56px
+    bottom 0
     width 100%
+    overflow scroll
 </style>

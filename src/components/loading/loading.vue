@@ -23,4 +23,5 @@ export default {
     top 50%
     left 50%
     transform translateX(-50%)
+    text-align center
 </style>
