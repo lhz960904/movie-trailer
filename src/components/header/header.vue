@@ -57,8 +57,9 @@
           box-sizing border-box
     .user
       width 15%
-      font-size 25px
       text-align center
+      .icon-user
+        font-size 25px
     .router-link-active
       font-weight: 700
       color #ffffff!important

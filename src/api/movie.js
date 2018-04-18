@@ -7,3 +7,10 @@ export const getMovies = (params) => {
     return response.data
   })
 }
+
+export const getDetail = (id) => {
+  return axios(`/api/client/movie/get_detail/${id}`)
+    .then((response) => {
+      return response.data
+    })
+}

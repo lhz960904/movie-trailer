@@ -1,10 +1,9 @@
 <template>
   <transition name="list">
     <div class="list">
-      <header class="header">
-        <i class="icon icon-left" @click="back"></i>
+      <backHeader @back="back">
         <tabs :tab="tab" :idx="type" @select="changeTab"></tabs>
-      </header>
+      </backHeader>
       <div class="content" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="20">
         <template v-for="movie in movies">
           <card :movie=movie :key="movie._id" @select="gotoDetail"></card>
@@ -22,6 +21,7 @@
 import Tabs from '@/components/tab/tab'
 import Card from '@/components/card/card'
 import Loading from '@/components/loading/loading'
+import backHeader from '@/components/back-header/back-header'
 import { getMovies } from '@/api/movie'
 import { ERR_OK } from '@/api/config'
 export default {
@@ -64,7 +64,7 @@ export default {
       this.$router.push('/movie')
     },
     gotoDetail (id) {
-      this.$router.push(`/movie/detail/${id}`)
+      this.$router.push(`/detail/${id}`)
     },
     loadMore () {
       this.busy = true
@@ -92,7 +92,8 @@ export default {
   components: {
     Tabs,
     Card,
-    Loading
+    Loading,
+    backHeader
   }
 }
 </script>
@@ -103,17 +104,7 @@ export default {
     top 0
     bottom 0
     width 100%
-    background #fff
     z-index 10
-    .header
-      position fixed
-      width 100%
-      height 56px
-      line-height 56px
-      color #fff
-      background #1c2635
-      .icon
-        font-size 40px
     .content
       .loading-wrapper
         height 30px

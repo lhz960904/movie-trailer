@@ -9,7 +9,7 @@
     <div class="list" v-show="movies">
       <div class="movie" v-for="item in movies" :key="item._id" @click="$emit('select', item._id)">
         <div class="image">
-          <img v-lazy="`http://movies.kyriel.cn/${item.posterKey}`" :alt="item.title" width="100%" height="100%">
+          <img v-lazy="getImageUrl(item.posterKey)" :alt="item.title" width="100%" height="100%">
           <em class="rate" v-if="item.rate !== 0">{{item.rate}}</em>
         </div>
         <p class="title">{{item.title}}</p>
@@ -26,6 +26,11 @@ export default {
     movies: Array,
     title: String,
     count: Number
+  },
+  methods: {
+    getImageUrl (value) {
+      return `http://movies.kyriel.cn/${value}`
+    }
   },
   components: {
     Loading
@@ -50,11 +55,10 @@ export default {
       .more
         position relative
         height 20px
-        font-size 25px
         .icon
           position absolute
-          right -8px
-          top -2px
+          right -4px
+          font-size 20px
     .list
       display flex
       flex-direction row

@@ -1,7 +1,7 @@
 <template>
   <div class="card" @click="$emit('select', movie._id)">
     <div class="image">
-      <img v-lazy="`http://movies.kyriel.cn/${movie.posterKey}`" :alt="movie.title" width="100%">
+      <img v-lazy="getImageUrl" :alt="movie.title" width="100%">
     </div>
     <div class="descript">
       <h1 class="title">{{movie.title}}</h1>
@@ -34,6 +34,9 @@ export default {
       const pubdate = this.movie.pubdate
       const date = pubdate[pubdate.length - 1].date
       return moment(date).format('YYYY-MM-DD')
+    },
+    getImageUrl () {
+      return `http://movies.kyriel.cn/${this.movie.posterKey}`
     }
   }
 }
@@ -57,12 +60,15 @@ export default {
       font-size 13px
       color #666
       border-bottom 1px solid #e6e6e6
+      overflow hidden
+      white-space nowrap
       .title
         flex 1
         color #333
         font-size 17px
         font-weight 700
         overflow hidden
+        text-overflow ellipsis
       .rate
         flex 1
         .text
@@ -72,7 +78,7 @@ export default {
       .cast
         flex 1
         overflow hidden
-        text-overflow ellipsis4
+        text-overflow ellipsis
       .duration
         flex 1
 </style>

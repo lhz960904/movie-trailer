@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "dplayer": "^1.22.2",
     "fastclick": "^1.0.6",
     "moment": "^2.22.0",
     "vue": "^2.5.2",

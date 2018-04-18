@@ -25,4 +25,5 @@ export default {
     bottom 0
     width 100%
     overflow scroll
+    background #fff
 </style>
