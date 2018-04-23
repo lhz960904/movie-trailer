@@ -14,3 +14,10 @@ export const getDetail = (id) => {
       return response.data
     })
 }
+
+export const getRelative = (id) => {
+  return axios(`/api/client/movie/get_relative/${id}`)
+    .then((response) => {
+      return response.data
+    })
+}

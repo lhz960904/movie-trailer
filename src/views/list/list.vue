@@ -1,20 +1,18 @@
 <template>
-  <transition name="list">
-    <div class="list">
-      <backHeader @back="back">
-        <tabs :tab="tab" :idx="type" @select="changeTab"></tabs>
-      </backHeader>
-      <div class="content" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="20">
-        <template v-for="movie in movies">
-          <card :movie=movie :key="movie._id" @select="gotoDetail"></card>
-        </template>
-        <div class="loading-wrapper" v-show="busy && this.max_page!==0">
-          <p>加载中...</p>
-        </div>
+  <div class="list">
+    <backHeader @back="back">
+      <tabs :tab="tab" :idx="type" @select="changeTab"></tabs>
+    </backHeader>
+    <div class="content" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="20">
+      <template v-for="movie in movies">
+        <card :movie=movie :key="movie._id" @select="gotoDetail"></card>
+      </template>
+      <div class="loading-wrapper" v-show="busy && this.max_page!==0">
+        <p>加载中...</p>
       </div>
-      <loading :data="movies"></loading>
     </div>
-  </transition>
+    <loading :data="movies"></loading>
+  </div>
 </template>
 
 <script>
@@ -30,7 +28,8 @@ export default {
       movies: [],
       page: 1,
       busy: true,
-      max_page: 0
+      max_page: 0,
+      name: 'list'
     }
   },
   created () {
@@ -58,13 +57,25 @@ export default {
   methods: {
     changeTab (index) {
       let type = index === 1 ? 0 : 1
-      this.$router.push(`/movie/all/${type}`)
+      this.$router.push({
+        name: 'list',
+        params: {
+          type: type
+        }
+      })
     },
     back () {
-      this.$router.push('/movie')
+      this.$router.push({
+        name: 'movie'
+      })
     },
     gotoDetail (id) {
-      this.$router.push(`/detail/${id}`)
+      this.$router.push({
+        name: 'detail',
+        params: {
+          id: id
+        }
+      })
     },
     loadMore () {
       this.busy = true
@@ -109,8 +120,4 @@ export default {
       .loading-wrapper
         height 30px
         text-align center
-  .list-enter-active, .list-leave-active
-    transition all .5s
-  .list-enter, .list-leave-to
-    transform translateX(100%)
 </style>

@@ -3,7 +3,9 @@
     <block :movies="hot_movies" title="正在上映" :count="hot_count" @select="selectItem" @more="goMore(1)"></block>
     <spacing bgcolor="#f6f6f6" :height="10"></spacing>
     <block :movies="comming_movies" title="即将上映" :count="comming_count" @select="selectItem" @more="goMore(0)"></block>
-    <router-view></router-view>
+    <transition name="fade" mode="in-out">
+      <router-view></router-view>
+    </transition>
   </div>
 </template>
 
@@ -69,3 +71,10 @@ export default {
   }
 }
 </script>
+
+<style lang="stylus" scoped>
+  .fade-enter-active, .fade-leave-active
+    transition all .5s
+  .fade-enter, .fade-leave-to
+    transform translateX(100%)
+</style>

@@ -17,19 +17,20 @@ export default new Router({
     },
     {
       path: '/movie',
+      name: 'movie',
       component: Movie,
       children: [
         {
           path: 'all/:type',
           name: 'list',
           component: List
+        },
+        {
+          path: 'detail/:id',
+          name: 'detail',
+          component: Detail
         }
       ]
-    },
-    {
-      path: '/detail/:id',
-      name: 'detail',
-      component: Detail
     },
     {
       path: '/category',

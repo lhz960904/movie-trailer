@@ -1,50 +1,73 @@
 <template>
-  <div class="detail">
-    <div class="player-wrapper">
+  <div class="detail" ref="detail">
+    <div class="player-wrapper" @touchmove.prevent>
       <div class="player" ref="player"></div>
       <i class="icon icon-left" @click="back"></i>
-    </div>
-    <section class="info"  v-if="movie.title">
+      <section class="info"  v-if="movie.title">
       <div class="title">{{movie.title}}</div>
       <div class="descript">{{getDesc}}</div>
-      <div class="switch-wrapper" @click="getMore">
+      <div class="switch-wrapper" @click="show">
         <span>简介</span>
         <i class="icon icon-right"></i>
       </div>
-    </section>
+      </section>
+    </div>
     <spacing :height="10"></spacing>
-    <section class="relative-movies">
+    <section class="relative-movies" v-if="relative_movies">
       <h1>相关推荐</h1>
       <div class="list">
-        <div class="item" v-for="item in 6" :key="item.name">
-          <img src="http://movies.kyriel.cn/Fb1HYoBeqp2fCHgf~KtSl.jpg" width="56" height="100%">
-          <div class="text">
-            <span class="title">{{movie.title}}</span>
-            <span class="en_title">{{movie.en_title}}</span>
+        <div class="item" v-for="item in relative_movies" :key="item._id" @click="goToDetail(item._id)">
+          <img v-lazy="getUrl(item.posterKey)" width="56" height="70">
+          <div class="desc">
+            <p class="title">{{item.title}}</p>
+            <div class="rate" v-if="item.rate !== 0">
+              <span>豆瓣评分: </span>
+              <span class="text">{{item.rate}}</span>
+            </div>
+            <p class="pubdate" v-else>{{scalPubdate(item.pubdate)}}</p>
+            <p class="en_title">类型: {{item.movieTypes.join('/')}}</p>
           </div>
         </div>
       </div>
     </section>
+    <loading :data="relative_movies"></loading>
+    <transition name="layer">
+      <div class="layer-wrapper" ref="layer" v-show="isShow">
+        <div class="title">
+          <span>{{movie.title}}</span>
+          <i class="icon icon-down" @click="close"></i>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
 <script>
 import Spacing from '@/components/spacing/spacing'
+import Loading from '@/components/loading/loading'
 import moment from 'moment'
-import { getDetail } from '@/api/movie'
+import { getDetail, getRelative } from '@/api/movie'
 import { ERR_OK } from '@/api/config'
 import 'DPlayer/dist/DPlayer.min.css'
 import DPlayer from 'DPlayer'
 export default {
   data () {
     return {
-      movie: {}
+      movie: {},
+      relative_movies: [],
+      isShow: false
     }
   },
   beforeRouteEnter (to, from, next) {
     next(vm => {
       vm._getDetail()
+      vm._getRelative()
     })
+  },
+  beforeRouteUpdate  (to, from, next) {
+    next()
+    this._getDetail()
+    this._getRelative()
   },
   mounted () {
     this._scaleHeight()
@@ -64,14 +87,45 @@ export default {
     back () {
       this.$router.go(-1)
     },
-    getMore () {
-      console.log('more')
+    show () {
+      this.isShow = true
+      this.$refs.detail.style.overflow = 'hidden'
+    },
+    close () {
+      this.isShow = false
+      this.$refs.detail.style.overflow = 'scroll'
+    },
+    getUrl (key) {
+      return `http://movies.kyriel.cn/${key}`
+    },
+    scalPubdate (pubdate) {
+      const date = pubdate[pubdate.length - 1].date
+      return moment(date).format('YYYY-MM-DD')
+    },
+    goToDetail (id) {
+      this.$router.push({
+        name: 'detail',
+        params: {
+          id
+        }
+      })
     },
     _getDetail () {
       getDetail(this.$route.params.id).then(res => {
         if (res.code === ERR_OK) {
           this.movie = res.data.movie
           this._initPlayer()
+        } else {
+          this.$router.push('/movie')
+        }
+      })
+    },
+    _getRelative () {
+      getRelative(this.$route.params.id).then(res => {
+        if (res.code === ERR_OK) {
+          this.relative_movies = res.data.movies
+        } else {
+          this.$router.push('/movie')
         }
       })
     },
@@ -87,11 +141,14 @@ export default {
     },
     _scaleHeight () {
       const width = window.innerWidth
-      this.$refs.player.style.height = Math.round(width * 0.56) + 'px'
+      const height = Math.round(width * 0.56) + 'px'
+      this.$refs.player.style.height = height
+      this.$refs.layer.style.top = height
     }
   },
   components: {
-    Spacing
+    Spacing,
+    Loading
   }
 }
 </script>
@@ -107,7 +164,7 @@ export default {
     overflow scroll
     .player-wrapper
       position relative
-      .icon
+      .icon-left
         position absolute
         top 15px
         left 15px
@@ -126,9 +183,13 @@ export default {
         font-size 20px
         font-weight bold
         padding-right 100px
+        white-space nowrap
+        overflow hidden
+        text-overflow ellipsis
       .descript
         margin-top 20px
         color #777
+        font-size 15px
       .switch-wrapper
         position absolute
         top 15px
@@ -148,5 +209,39 @@ export default {
         .item
           display flex
           flex-direction row
-          margin-bottom 10px
+          margin-bottom 5px
+          padding-bottom 5px
+          line-height 23px
+          border-bottom: 1px solid #eee
+          .desc
+            flex 1
+            margin-left 10px
+            overflow hidden
+            white-space nowrap
+            .title
+              overflow hidden
+              text-overflow ellipsis
+            .rate
+              .text
+                font-size 15px
+                font-weight 700
+                color #faaf00
+    .layer-wrapper
+      position fixed
+      left 0
+      right 0
+      bottom 0
+      background #fff
+      overflow hidden
+      .title
+        padding 5px 10px
+        height 20px
+        line-height 20px
+        font-size 14px
+        .icon-down
+          float right
+  .layer-enter-active, .layer-leave-active
+    transition all .3s
+  .layer-enter, .layer-leave-to
+    transform translateY(100%)
 </style>
