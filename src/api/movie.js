@@ -21,3 +21,14 @@ export const getRelative = (id) => {
       return response.data
     })
 }
+
+export const searchMovie = (query) => {
+  return axios(`/api/client/movie/search`, {
+    params: {
+      q: query
+    }
+  })
+    .then((response) => {
+      return response.data
+    })
+}
