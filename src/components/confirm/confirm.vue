@@ -42,11 +42,11 @@ export default {
     hide () {
       this.showFlag = false
     },
-    cancel() {
+    cancel () {
       this.hide()
       this.$emit('cancel')
     },
-    confirm() {
+    confirm () {
       this.hide()
       this.$emit('confirm')
     }
