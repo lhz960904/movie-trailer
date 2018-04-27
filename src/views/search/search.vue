@@ -12,7 +12,7 @@
     <div class="search-history" v-show="searchHistory.length">
       <div class="title">
         <span>搜索历史</span>
-        <i class="icon icon-delete" @click="clearSearchHistory"></i>
+        <i class="icon icon-delete" @click="showConfirm"></i>
       </div>
       <div v-for="item in searchHistory" :key="item" class="item">
         <i class="icon icon-history"></i>
@@ -29,11 +29,13 @@
         <p class="text">没有找到相关内容</p>
       </div>
     </div>
+    <confirm ref="confirm" text="是否删除所有搜索历史" @confirm="clearSearchHistory"></confirm>
   </div>
 </template>
 
 <script>
 import searchBox from '@/components/searchBox/searchBox'
+import Confirm from '@/components/confirm/confirm'
 import Card from '@/components/card/card'
 import { searchMovie } from '@/api/movie'
 import { ERR_OK } from '@/api/config'
@@ -48,6 +50,12 @@ export default {
   },
   created () {
     this._getHotKey()
+  },
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      vm.addQuery('')
+      vm.hideConfirm()
+    })
   },
   computed: {
     ...mapGetters([
@@ -83,6 +91,12 @@ export default {
         params: {id}
       })
     },
+    showConfirm () {
+      this.$refs.confirm.show()
+    },
+    hideConfirm () {
+      this.$refs.confirm.hide()
+    },
     _getHotKey () {
       // todo: 获取热门搜索关键词
       this.hotKey = ['复仇者联盟3：无限战争', '后来的我们', '毒液：致命守护者', '唐人街探案2', '惊奇队长', '复仇者联盟4']
@@ -95,7 +109,8 @@ export default {
   },
   components: {
     searchBox,
-    Card
+    Card,
+    Confirm
   }
 }
 </script>
