@@ -1,4 +1,4 @@
-import * as types from './mutation-tyoes'
+import * as types from './mutation-types'
 import { saveSearch, deleteSearch, clearSearch } from '@/common/js/cache'
 
 export const saveSearchHistory = function ({commit}, query) {

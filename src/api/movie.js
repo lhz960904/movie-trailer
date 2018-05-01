@@ -32,3 +32,10 @@ export const searchMovie = (query) => {
       return response.data
     })
 }
+
+export const getHotKey = () => {
+  return axios(`/api/client/movie/gethotkey`)
+    .then((response) => {
+      return response.data
+    })
+}

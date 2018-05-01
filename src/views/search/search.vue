@@ -37,7 +37,7 @@
 import searchBox from '@/components/searchBox/searchBox'
 import Confirm from '@/components/confirm/confirm'
 import Card from '@/components/card/card'
-import { searchMovie } from '@/api/movie'
+import { searchMovie, getHotKey } from '@/api/movie'
 import { ERR_OK } from '@/api/config'
 import { mapActions, mapGetters } from 'vuex'
 export default {
@@ -98,8 +98,15 @@ export default {
       this.$refs.confirm.hide()
     },
     _getHotKey () {
-      // todo: 获取热门搜索关键词
-      this.hotKey = ['复仇者联盟3：无限战争', '后来的我们', '毒液：致命守护者', '唐人街探案2', '惊奇队长', '复仇者联盟4']
+      getHotKey().then((res) => {
+        if (res.code === ERR_OK) {
+          let arr = []
+          res.data.movies.forEach(item => {
+            arr.push(item.title)
+          })
+          this.hotKey = arr
+        }
+      })
     },
     ...mapActions([
       'saveSearchHistory',

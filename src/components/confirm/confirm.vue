@@ -62,7 +62,7 @@ export default {
     top 0
     bottom 0
     z-index 99
-    background rgba(0, 0, 0, 0.3)
+    background rgba(0, 0, 0, 0.6)
     &.fade-enter-active
       animation confirm-fadein 0.3s
       .confirm-content
@@ -76,12 +76,12 @@ export default {
       .confirm-content
         width 270px
         border-radius 13px
-        background #1c2635
+        background rgba(255,255,255,0.9);
         .text
           padding 19px 15px
           line-height 22px
           text-align center
-          color #f2f2f2
+          color #333
         .operate
           display flex
           align-items center
@@ -91,7 +91,7 @@ export default {
             line-height 22px
             padding 10px 0
             border-top 1px solid #999
-            color #f2f2f2
+            color #1e7dd7
             &.left
               border-right: 1px solid #999
   @keyframes confirm-fadein
