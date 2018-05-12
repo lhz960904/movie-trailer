@@ -1,5 +1,6 @@
 <template>
-  <div class="card" @click="$emit('select', movie._id)">
+  <div class="card" @click="$emit('select', movie._id)" :class="{'rank-active': rank}">
+    <p class="text" v-if="rank" :class="'rank-' + index">{{index}}</p>
     <div class="image">
       <img v-lazy="getImageUrl" :alt="movie.title" width="100%">
     </div>
@@ -20,7 +21,12 @@
 import moment from 'moment'
 export default {
   props: {
-    movie: Object
+    movie: Object,
+    index: Number,
+    rank: {
+      type: Boolean,
+      default: false
+    }
   },
   computed: {
     casts () {
@@ -47,7 +53,28 @@ export default {
     display flex
     padding 10px 20px
     height 140px
+    align-items center
     box-sizing border-box
+    &.rank-active
+      padding-left 0
+    .text
+      width 30px
+      height 30px
+      margin 0 10px
+      line-height 30px
+      text-align center
+      background-color #f7f7f7
+      color #999
+      font-weight 700
+      &.rank-1
+        background #ef4238
+        color #fff
+      &.rank-2
+        background #ffb400
+        color #fff
+      &.rank-3
+        background #FFB47A
+        color #fff
     .image
       width 80px
     .descript

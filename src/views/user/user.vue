@@ -2,7 +2,7 @@
   <div class="user" v-if="userInfo.username">
     <div class="userinfo-wrapper">
       <div class="avatar">
-        <img v-lazy="userInfo.headImg" width="100%">
+        <img v-lazy="avatarImg" width="100%">
       </div>
       <div class="info">
         <span class="text">{{userInfo.email}}</span>
@@ -21,7 +21,7 @@
           <i class="icon icon-collect"></i>
           <span class="text">我的收藏</span>
           <i class="icon icon-right"></i>
-          <span class="text count">28</span>
+          <span class="text count" v-if="userInfo.collects.length">{{userInfo.collects.length}}</span>
         </li>
       </ul>
     </div>
@@ -44,6 +44,15 @@ export default {
   data () {
     return {
       userInfo: {}
+    }
+  },
+  computed: {
+    avatarImg () {
+      const prefix = `http://admin.movie.kyriel.cn/`
+      if (this.userInfo.headImg) {
+        return prefix + this.userInfo.headImg
+      }
+      return false
     }
   },
   methods: {
@@ -96,6 +105,8 @@ export default {
         height 67px
         background #eee
         border-radius 50%
+        img
+         border-radius 50%
       .info
         display flex
         flex-direction column
