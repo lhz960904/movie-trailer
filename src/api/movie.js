@@ -39,3 +39,11 @@ export const getHotKey = () => {
       return response.data
     })
 }
+
+export const getSpecialMovies = (params) => {
+  return axios('/api/client/movie/get_special', {
+    params: params
+  }).then((response) => {
+    return response.data
+  })
+}
