@@ -47,3 +47,10 @@ export const getSpecialMovies = (params) => {
     return response.data
   })
 }
+
+export const getCats = () => {
+  return axios(`/api/client/movie/get_cats`)
+    .then((response) => {
+      return response.data
+    })
+}
