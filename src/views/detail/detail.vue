@@ -84,8 +84,8 @@ import Loading from '@/components/loading/loading'
 import moment from 'moment'
 import { getDetail, getRelative } from '@/api/movie'
 import { ERR_OK } from '@/api/config'
-import 'DPlayer/dist/DPlayer.min.css'
-import DPlayer from 'DPlayer'
+import 'dplayer/dist/DPlayer.min.css'
+import DPlayer from 'dplayer'
 export default {
   data () {
     return {
