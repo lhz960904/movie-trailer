@@ -254,6 +254,7 @@ export default {
         .icon
           font-weight bold
           vertical-align text-bottom
+          line-height 20px
     .relative-movies
       .text
         font-weight bold
