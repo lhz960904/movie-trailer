@@ -1,13 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Movie from 'views/movie/movie'
-import Detail from 'views/detail/detail'
-import Category from 'views/category/category'
-import Rank from 'views/rank/rank'
-import Search from 'views/search/search'
-import List from 'views/list/list'
-import User from 'views/user/user'
-import Login from 'views/login/login'
+const Movie = () => import('views/movie/movie')
+const Detail = () => import('views/detail/detail')
+const Category = () => import('views/category/category')
+const Rank = () => import('views/rank/rank')
+const Search = () => import('views/search/search')
+const List = () => import('views/list/list')
+const User = () => import('views/user/user')
+const Login = () => import('views/login/login')
 
 Vue.use(Router)
 
