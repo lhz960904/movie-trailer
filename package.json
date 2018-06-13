@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "dplayer": "^1.22.2",
     "fastclick": "^1.0.6",
     "good-storage": "^1.0.1",
     "moment": "^2.22.0",
