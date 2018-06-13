@@ -81,7 +81,7 @@
 <script>
 import Spacing from '@/components/spacing/spacing'
 import Loading from '@/components/loading/loading'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { getDetail, getRelative } from '@/api/movie'
 import { ERR_OK } from '@/api/config'
 export default {
@@ -113,11 +113,11 @@ export default {
     pubdate () {
       const pubdate = this.movie.pubdate
       const date = pubdate[pubdate.length - 1].date
-      return moment(date).format('YYYY-MM-DD')
+      return dayjs(date).format('YYYY-MM-DD')
     },
     getDesc () {
       const length = this.movie.pubdate.length
-      const duration = this.movie.duration || moment(this.movie.pubdate[length - 1].date).format('DD-MM')
+      const duration = this.movie.duration || dayjs(this.movie.pubdate[length - 1].date).format('DD-MM')
       const rate = this.movie.rate ? `${this.movie.rate}分` : '即将上映'
       return `${rate}  · ${this.movie.movieTypes.join(' ')} · ${duration}`
     },
@@ -145,7 +145,7 @@ export default {
     },
     scalPubdate (pubdate) {
       const date = pubdate[pubdate.length - 1].date
-      return moment(date).format('YYYY-MM-DD')
+      return dayjs(date).format('YYYY-MM-DD')
     },
     goToDetail (id) {
       this.$router.push({

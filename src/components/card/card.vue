@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import moment from 'moment'
+import dayjs from 'dayjs'
 export default {
   props: {
     movie: Object,
@@ -39,7 +39,7 @@ export default {
     pubdate () {
       const pubdate = this.movie.pubdate
       const date = pubdate[pubdate.length - 1].date
-      return moment(date).format('YYYY-MM-DD')
+      return dayjs(date).format('YYYY-MM-DD')
     },
     getImageUrl () {
       return `http://movies.kyriel.cn/${this.movie.posterKey}`
