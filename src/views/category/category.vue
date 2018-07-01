@@ -69,9 +69,9 @@
 </template>
 
 <script>
+import Card from 'components/card/card'
 import { getSpecialMovies, getCats } from 'api/movie'
 import { ERR_OK } from 'api/config'
-import Card from '@/components/card/card'
 export default {
   data () {
     return {
@@ -183,8 +183,8 @@ export default {
 
 <style lang="stylus" scoped>
   .category
-    position absolute
-    top 0
+    position fixed
+    top 56px
     bottom 0
     width 100%
     .nav-wrapper
