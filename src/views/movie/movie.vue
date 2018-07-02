@@ -1,19 +1,20 @@
 <template>
-  <div class="movie">
-    <block :movies="hot_movies" title="正在上映" :count="hot_count" @select="selectItem" @more="goMore(1)"></block>
-    <spacing bgcolor="#f6f6f6" :height="10"></spacing>
-    <block :movies="comming_movies" title="即将上映" :count="comming_count" @select="selectItem" @more="goMore(0)"></block>
-    <transition name="fade" mode="in-out">
-      <router-view></router-view>
-    </transition>
+  <div class="movie" ref="movie">
+    <scroll :data="hot_movies">
+      <block :movies="hot_movies" title="正在上映" :count="hot_count" @select="selectItem" @more="goMore(1)"></block>
+      <spacing bgcolor="#f6f6f6" :height="10"></spacing>
+      <block :movies="comming_movies" title="即将上映" :count="comming_count" @select="selectItem" @more="goMore(0)"></block>
+    </scroll>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import Block from '@/components/block/block'
-import Spacing from '@/components/spacing/spacing'
-import { getMovies } from '@/api/movie'
-import { ERR_OK } from '@/api/config'
+import Block from 'components/block/block'
+import Scroll from 'components/scroll/scroll'
+import Spacing from 'components/spacing/spacing'
+import { getMovies } from 'api/movie'
+import { ERR_OK } from 'api/config'
 export default {
   data () {
     return {
@@ -67,14 +68,16 @@ export default {
   },
   components: {
     Block,
+    Scroll,
     Spacing
   }
 }
 </script>
 
 <style lang="stylus" scoped>
-  .fade-enter-active, .fade-leave-active
-    transition all .5s
-  .fade-enter, .fade-leave-to
-    transform translateX(100%)
+  .movie
+    position fixed
+    top 56px
+    bottom 0
+    width 100%
 </style>

@@ -1,17 +1,20 @@
 <template>
   <div class="rank">
-    <template v-for="(item, index) in movies">
-      <div class="movie-item" :key="item._id">
-        <card  :movie="item" :index="index + 1" :rank="true" @select="selectItem"/>
-      </div>
-    </template>
+    <scroll>
+      <template v-for="(item, index) in movies">
+        <div class="movie-item" :key="item._id">
+          <card  :movie="item" :index="index + 1" :rank="true" @select="selectItem"/>
+        </div>
+      </template>
+    </scroll>
   </div>
 </template>
 
 <script>
-import { getHotKey } from '@/api/movie'
-import { ERR_OK } from '@/api/config'
-import Card from '@/components/card/card'
+import Card from 'components/card/card'
+import Scroll from 'components/scroll/scroll'
+import { getHotKey } from 'api/movie'
+import { ERR_OK } from 'api/config'
 export default {
   data () {
     return {
@@ -37,15 +40,16 @@ export default {
     }
   },
   components: {
-    Card
+    Card,
+    Scroll
   }
 }
 </script>
 
 <style lang="stylus" scoped>
   .rank
-    position absolute
-    top 0
+    position fixed
+    top 56px
     bottom 0
     width 100%
 </style>

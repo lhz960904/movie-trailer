@@ -164,6 +164,9 @@ export default {
     z-index 10
     background-color #f6f6f6
     .content
+      position fixed
+      top 56px
+      width 100%
       background-color #f6f6f6
       .signin-wrapper, .signup-wrapper
         .form-box
