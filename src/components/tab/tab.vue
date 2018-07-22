@@ -3,10 +3,9 @@
     <div class="item"
       v-for="(name, index) in tab"
       :key="name"
-      :class="{'active': idx == index}"
-      @click="$emit('select', index)"
-    >
-      {{name}}
+      :class="{'active': idx === index}"
+      @click="$emit('select', index)">
+      <span>{{name}}</span>
     </div>
   </div>
 </template>

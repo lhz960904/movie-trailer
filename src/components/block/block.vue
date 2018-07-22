@@ -2,9 +2,7 @@
   <section class="block">
     <div class="header" @click="$emit('more')">
       <h1 class="title">{{title}}({{count}}部)</h1>
-      <div class="more">
-        <i class="icon icon-right"></i>
-      </div>
+      <i class="icon icon-right"></i>
     </div>
     <div class="list" v-show="movies">
       <div class="movie" v-for="item in movies" :key="item._id" @click="$emit('select', item._id)">
@@ -40,28 +38,20 @@ export default {
 
 <style lang="stylus" scoped>
   .block
-    position relative
     padding 15px
     min-height 100px
     text-align center
     .header
-      overflow hidden
+      display flex
+      justify-content space-between
       margin-bottom 15px
-      height 20px
       font-weight bold
       .title
-        float left
         font-size 20px
-      .more
-        position relative
-        height 20px
-        .icon
-          position absolute
-          right -4px
-          font-size 20px
+      .icon-right
+        font-size 20px
     .list
       display flex
-      flex-direction row
       flex-wrap wrap
       .movie
         width 25%

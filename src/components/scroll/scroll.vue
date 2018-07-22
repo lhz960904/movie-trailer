@@ -13,6 +13,10 @@ export default {
     data: {
       type: Array,
       default: null
+    },
+    pullUpLoad: {
+      type: null,
+      default: false
     }
   },
   mounted () {
@@ -25,18 +29,34 @@ export default {
       if (!this.$refs.wrapper) {
         return
       }
-      this.srcoll = new BScroll(this.$refs.wrapper, {
-        bounce: false
+      this.scroll = new BScroll(this.$refs.wrapper, {
+        bounce: false,
+        click: true,
+        pullUpLoad: this.pullUpLoad
       })
+      if (this.pullUpLoad) {
+        this._initPullUpLoad()
+      }
     },
     refresh () {
-      this.srcoll && this.srcoll.refresh()
+      this.scroll && this.scroll.refresh()
+    },
+    forceUpdate () {
+      if (this.pullUpLoad) {
+        this.scroll.finishPullUp()
+        this.refresh()
+      }
+    },
+    _initPullUpLoad () {
+      this.scroll.on('pullingUp', () => {
+        this.$emit('pullingUp')
+      })
     }
   },
   watch: {
     data () {
       setTimeout(() => {
-        this.refresh()
+        this.forceUpdate(true)
       }, 20)
     }
   }

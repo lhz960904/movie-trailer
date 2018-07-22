@@ -1,5 +1,5 @@
 <template>
-  <div class="movie" ref="movie">
+  <div class="movie">
     <scroll :data="hot_movies">
       <block :movies="hot_movies" title="正在上映" :count="hot_count" @select="selectItem" @more="goMore(1)"></block>
       <spacing bgcolor="#f6f6f6" :height="10"></spacing>
