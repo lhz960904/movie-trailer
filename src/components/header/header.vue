@@ -26,26 +26,24 @@
 <style lang="stylus" scoped>
   .header
     position fixed
+    display flex
     width 100%
     height 56px
-    color: #bbb
-    display flex
     line-height 56px
+    color: #bbb
     background #1c2635
-    z-index: 2
     .logo
       width 25%
       padding 15px
       box-sizing border-box
       .back
         display block
-        width 100%
         height 100%
         background url('./logo.png') no-repeat center
         background-size contain
     .tabs
-      width 60%
       display flex
+      flex 1
       font-size 17px
       .item
         flex 1

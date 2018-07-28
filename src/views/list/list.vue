@@ -1,34 +1,36 @@
 <template>
-  <div class="list">
-    <backHeader @back="back">
-      <tabs :tab="tab" :idx="type" @select="changeTab"></tabs>
-    </backHeader>
-    <div class="content" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="20">
-      <template v-for="movie in movies">
-        <card :movie=movie :key="movie._id" @select="gotoDetail"></card>
-      </template>
-      <div class="loading-wrapper" v-show="busy && this.max_page!==0">
-        <p>加载中...</p>
+  <transition name="fade">
+    <div class="list">
+      <backHeader @back="back">
+        <tabs :tab="tab" :idx="type" @select="changeTab"></tabs>
+      </backHeader>
+      <div class="content-wrapper">
+        <scroll :data="movies" :pullUpLoad="{threshold: 50}" @pullingUp="loadMore">
+          <template v-for="movie in movies">
+            <card :movie=movie :key="movie._id" @select="gotoDetail"></card>
+          </template>
+        </scroll>
       </div>
+      <loading :data="movies"></loading>
     </div>
-    <loading :data="movies"></loading>
-  </div>
+  </transition>
 </template>
 
 <script>
-import Tabs from '@/components/tab/tab'
-import Card from '@/components/card/card'
-import Loading from '@/components/loading/loading'
-import backHeader from '@/components/back-header/back-header'
-import { getMovies } from '@/api/movie'
-import { ERR_OK } from '@/api/config'
+import Tabs from 'components/tab/tab'
+import Card from 'components/card/card'
+import Scroll from 'components/scroll/scroll'
+import Loading from 'components/loading/loading'
+import backHeader from 'components/back-header/back-header'
+import { getMovies } from 'api/movie'
+import { ERR_OK } from 'api/config'
+let COUNT = 0
+const PAGE_SIZE = 10
 export default {
   data () {
     return {
       movies: [],
       page: 1,
-      busy: true,
-      max_page: 0,
       name: 'list'
     }
   },
@@ -44,8 +46,8 @@ export default {
   },
   beforeRouteUpdate  (to, from, next) {
     this.page = 1
-    this.max_page = 0
     this.movies = []
+    COUNT = 0
     this._getMovies(to.params.type)
     next()
   },
@@ -56,7 +58,7 @@ export default {
   },
   methods: {
     changeTab (index) {
-      let type = index === 1 ? 0 : 1
+      const type = index === 1 ? 0 : 1
       this.$router.push({
         name: 'list',
         params: {
@@ -78,24 +80,21 @@ export default {
       })
     },
     loadMore () {
-      this.busy = true
       this.page++
       this._getMovies(this.$route.params.type)
     },
     _getMovies (type) {
-      if (this.page > this.max_page && this.max_page !== 0) {
-        this.busy = false
+      if (this.movies.length >= COUNT && COUNT !== 0) {
         return
       }
       getMovies({
         page: this.page,
-        page_size: 10,
+        page_size: PAGE_SIZE,
         type
       }).then(res => {
         if (res.code === ERR_OK) {
           this.movies = this.movies.concat(res.data.movies)
-          this.max_page = this.max_page || Math.ceil(res.data.count / 10)
-          this.busy = false
+          COUNT = res.data.count
         }
       })
     }
@@ -103,6 +102,7 @@ export default {
   components: {
     Tabs,
     Card,
+    Scroll,
     Loading,
     backHeader
   }
@@ -116,8 +116,14 @@ export default {
     bottom 0
     width 100%
     z-index 10
-    .content
-      .loading-wrapper
-        height 30px
-        text-align center
+    background-color #ffffff
+    .content-wrapper
+      position absolute
+      top 56px
+      bottom 0
+      width 100%
+  .fade-enter-active, .fade-leave-active
+    transition all .5s
+  .fade-enter, .fade-leave-to
+    transform translateX(100%)
 </style>

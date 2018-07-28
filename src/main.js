@@ -4,11 +4,9 @@ import store from './store'
 import router from './router'
 import fastClick from 'fastclick'
 import VueLazyload from 'vue-lazyload'
-import infiniteScroll from 'vue-infinite-scroll'
-import '@/common/styles/common.styl'
+import 'common/styles/common.styl'
 
 fastClick.attach(document.body)
-Vue.use(infiniteScroll)
 Vue.use(VueLazyload, {
   error: require('./common/images/loading.png'),
   loading: require('./common/images/loading.png')

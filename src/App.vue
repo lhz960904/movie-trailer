@@ -1,11 +1,9 @@
 <template>
   <div id="app">
     <Header></Header>
-    <div class="content">
-      <keep-alive>
-        <router-view></router-view>
-      </keep-alive>
-    </div>
+    <keep-alive>
+      <router-view></router-view>
+    </keep-alive>
   </div>
 </template>
 
@@ -17,13 +15,3 @@ export default {
   }
 }
 </script>
-
-<style lang="stylus">
-  .content
-    position absolute
-    top 56px
-    bottom 0
-    width 100%
-    overflow scroll
-    background #fff
-</style>
