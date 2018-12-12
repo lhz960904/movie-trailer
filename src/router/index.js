@@ -1,7 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-const Home = () => import('views/Home.vue')
-const About = () => import('views/About.vue')
+const Recommend = () => import('views/Recommend')
+const Category = () => import('views/Category')
+const Rank = () => import('views/Rank')
+const Search = () => import('views/Search')
+const User = () => import('views/User')
 
 Vue.use(Router)
 
@@ -11,13 +14,32 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: Home
+      redirect: '/recommend'
     },
     {
-      path: '/about',
-      name: 'about',
-      component: About
+      path: '/recommend',
+      name: 'recommend',
+      component: Recommend
+    },
+    {
+      path: '/category',
+      name: 'category',
+      component: Category
+    },
+    {
+      path: '/rank',
+      name: 'rank',
+      component: Rank
+    },
+    {
+      path: '/search',
+      name: 'search',
+      component: Search
+    },
+    {
+      path: '/user',
+      name: 'user',
+      component: User
     }
   ]
 })

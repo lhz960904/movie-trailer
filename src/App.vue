@@ -1,11 +1,27 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+    <my-header></my-header>
+    <div class="content">
+      <keep-alive>
+        <router-view></router-view>
+      </keep-alive>
     </div>
-    <router-view/>
   </div>
 </template>
-<style lang="stylus">
+
+<script>
+import MyHeader from 'components/Header/Header'
+export default {
+  components: {
+    MyHeader
+  }
+}
+</script>
+
+<style lang="stylus" scoped>
+.content
+  position fixed
+  top 56px
+  bottom 0
+  width 100%
 </style>

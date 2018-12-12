@@ -8,6 +8,11 @@ module.exports = {
       .set('common', resolve('src/common'))
       .set('components', resolve('src/components'))
       .set('views', resolve('src/views'))
+    config.devServer.proxy({
+        '/api': {
+          target: 'http://127.0.0.1:4000'
+        }
+      })
   },
   css: {
     loaderOptions: {
