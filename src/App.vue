@@ -1,19 +1,20 @@
 <template>
   <div id="app">
-    <my-header></my-header>
+    <TheHeader/>
     <div class="content">
       <keep-alive>
-        <router-view></router-view>
+        <RouterView/>
       </keep-alive>
     </div>
   </div>
 </template>
 
 <script>
-import MyHeader from 'components/Header/Header'
+import TheHeader from 'components/TheHeader'
 export default {
+  name: 'App',
   components: {
-    MyHeader
+    TheHeader
   }
 }
 </script>

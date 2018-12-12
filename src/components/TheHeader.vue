@@ -17,7 +17,7 @@
         <router-link to="/search">搜索</router-link>
       </div>
     </div>
-    <div to="/user" class="user" @click="$router.push('/user')">
+    <div class="user" @click="$router.push('/user')">
       <i class="iconfont icon-user"></i>
     </div>
   </div>
@@ -30,8 +30,8 @@
     width 100%
     height 56px
     line-height 56px
-    color: #bbb
-    background #1c2635
+    color: $gray
+    background $theme-color
     .logo
       width 25%
       padding 15px
@@ -50,7 +50,7 @@
         text-align center
         a
           height 56px
-          color: #bbb
+          color: $gray
           display inline-block
           box-sizing border-box
     .user
@@ -60,6 +60,6 @@
         font-size 25px
     .router-link-active
       font-weight: 700
-      color #ffffff!important
+      color #fff!important
       border-bottom: 3px solid #fff
 </style>

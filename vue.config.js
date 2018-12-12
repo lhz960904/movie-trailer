@@ -17,7 +17,7 @@ module.exports = {
   css: {
     loaderOptions: {
       stylus: {
-
+        import: ['~common/styles/mixin.styl']
       }
     }
   }
