@@ -1,63 +1,23 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-const Movie = () => import('views/movie/movie')
-const Detail = () => import('views/detail/detail')
-const Category = () => import('views/category/category')
-const Rank = () => import('views/rank/rank')
-const Search = () => import('views/search/search')
-const List = () => import('views/list/list')
-const User = () => import('views/user/user')
-const Login = () => import('views/login/login')
+const Home = () => import('views/Home.vue')
+const About = () => import('views/About.vue')
 
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
+  base: process.env.BASE_URL,
   routes: [
     {
       path: '/',
-      redirect: '/movie'
+      name: 'home',
+      component: Home
     },
     {
-      path: '/movie',
-      name: 'movie',
-      component: Movie,
-      children: [
-        {
-          path: 'all/:type',
-          name: 'list',
-          component: List
-        },
-        {
-          path: 'detail/:id',
-          name: 'detail',
-          component: Detail
-        }
-      ]
-    },
-    {
-      path: '/category',
-      name: 'category',
-      component: Category
-    },
-    {
-      path: '/rank',
-      name: 'rank',
-      component: Rank
-    },
-    {
-      path: '/search',
-      name: 'search',
-      component: Search
-    },
-    {
-      path: '/user',
-      name: 'user',
-      component: User
-    },
-    {
-      path: '/login/:type',
-      name: 'login',
-      component: Login
+      path: '/about',
+      name: 'about',
+      component: About
     }
   ]
 })
