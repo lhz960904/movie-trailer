@@ -1,24 +1,35 @@
 <template>
   <div class="header">
     <div class="logo">
-      <i class="back"></i>
+      <i class="back" />
     </div>
     <div class="tabs">
       <div class="item">
-        <router-link to="/recommend">首页</router-link>
+        <RouterLink to="/recommend">
+          首页
+        </RouterLink>
       </div>
       <div class="item">
-        <router-link to="/category">分类</router-link>
+        <RouterLink to="/category">
+          分类
+        </RouterLink>
       </div>
       <div class="item">
-        <router-link to="/rank">榜单</router-link>
+        <RouterLink to="/rank">
+          榜单
+        </RouterLink>
       </div>
       <div class="item">
-        <router-link to="/search">搜索</router-link>
+        <RouterLink to="/search">
+          搜索
+        </RouterLink>
       </div>
     </div>
-    <div class="user" @click="$router.push('/user')">
-      <i class="iconfont icon-user"></i>
+    <div
+      class="user"
+      @click="$router.push('/user')"
+    >
+      <i class="iconfont icon-user" />
     </div>
   </div>
 </template>
