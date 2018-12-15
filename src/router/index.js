@@ -5,6 +5,7 @@ const Category = () => import('views/Category')
 const Rank = () => import('views/Rank')
 const Search = () => import('views/Search')
 const User = () => import('views/User')
+const ErrorPage = () => import('views/Error')
 
 Vue.use(Router)
 
@@ -40,6 +41,11 @@ export default new Router({
       path: '/user',
       name: 'user',
       component: User
+    },
+    {
+      path: '/error',
+      name: 'error',
+      component: ErrorPage
     }
   ]
 })
