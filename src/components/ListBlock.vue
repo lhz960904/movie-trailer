@@ -21,7 +21,7 @@
       >
         <div class="image">
           <img
-            :src="item.poster"
+            v-lazy="item.poster"
             width="100%"
             height="100%"
           >
@@ -29,7 +29,7 @@
             v-if="item.isPlay === 1"
             class="rate"
           >
-            {{ item.rate }}
+            {{ item.rate | toFixed }}
           </em>
         </div>
         <p class="title">
@@ -52,6 +52,11 @@ export default {
   name: 'ListBlock',
   components: {
     Loading
+  },
+  filters: {
+    toFixed (num) {
+      return num.toFixed(1)
+    }
   },
   props: {
     movies: {
