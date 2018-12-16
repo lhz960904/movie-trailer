@@ -21,7 +21,7 @@ export default {
 
 <style lang="stylus" scoped>
 .content
-  position fixed
+  position absolute
   top 56px
   bottom 0
   width 100%

@@ -1,14 +1,47 @@
 <template>
   <div class="recommend">
-    <h1>recommend</h1>
+    <ScrollView :data="movies">
+      <ListBLock
+        :movies="playingMovies"
+        :title="`正在上映(${playingCount})`"
+        @more="goMore(1)"
+        @select="selectItem"
+      />
+      <Spacing
+        bg-color="#f6f6f6"
+        :height="10"
+      />
+      <ListBLock
+        :movies="commingMovies"
+        :title="`即将上映(${commingCount})`"
+        @more="goMore(0)"
+        @select="selectItem"
+      />
+    </ScrollView>
   </div>
 </template>
 
 <script>
+import ScrollView from 'components/ScrollView'
+import ListBLock from 'components/ListBlock'
+import Spacing from 'components/Spacing'
 export default {
+  components: {
+    ListBLock,
+    Spacing,
+    ScrollView
+  },
   data () {
     return {
-
+      commingMovies: [],
+      commingCount: 0,
+      playingMovies: [],
+      playingCount: 0
+    }
+  },
+  computed: {
+    movies () {
+      return this.commingMovies.concat(this.playingMovies)
     }
   },
   created () {
@@ -16,10 +49,27 @@ export default {
   },
   methods: {
     getMovie () {
-      this.$axios.get('/api/movie/get_detail/5c0e941541dc26484002c94a').then(res => {
-        console.log(res)
+      this.$axios.get('/api/movie/get_hot').then(res => {
+        if (res.code === 1001) {
+          const { comming, playing } = res.result
+          this.commingMovies = comming.movies
+          this.commingCount = comming.count
+          this.playingMovies = playing.movies
+          this.playingCount = playing.count
+        }
       })
+    },
+    goMore (type) {
+      this.$router.push(`/list/${type}`)
+    },
+    selectItem (id) {
+      this.$router.push(`/movie/${id}`)
     }
   }
 }
 </script>
+
+<style lang="stylus" scoped>
+.recommend
+  height 100%
+</style>
