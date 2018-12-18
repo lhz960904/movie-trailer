@@ -67,8 +67,8 @@ export default {
     this.page = 1
     this.movieList = []
     this.count = 0
-    this.getMovieList()
     next()
+    this.getMovieList()
   },
   methods: {
     getMovieList () {
