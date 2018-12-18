@@ -25,7 +25,7 @@ export default {
   watch: {
     data () {
       setTimeout(() => {
-        this.forceUpdate(true)
+        this.forceUpdate()
       }, 20)
     }
   },
@@ -50,8 +50,11 @@ export default {
     },
     initPullUpLoad () {
       this.scroll.on('pullingUp', () => {
-        this.$emit('pullingUp')
+        this.$emit('pulling-up')
       })
+    },
+    refresh () {
+      this.scroll && this.scroll.refresh()
     },
     forceUpdate () {
       if (this.pullUpLoad) {

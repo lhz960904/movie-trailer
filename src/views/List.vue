@@ -1,0 +1,137 @@
+<template>
+  <Transition name="fade">
+    <div class="list">
+      <TheBackHeader>
+        <div class="tabs">
+          <div
+            v-for="(name, index) in tabs"
+            :key="name"
+            :class="{ 'active': activeIdx === index }"
+            class="item"
+            @click="switchTab(index)"
+          >
+            <span>{{ name }}</span>
+          </div>
+        </div>
+      </TheBackHeader>
+      <div class="content-wrapper">
+        <ScrollView
+          :data="movieList"
+          :pull-up-load="{ threshold: 50 }"
+          @pulling-up="loadMore"
+        >
+          <Card
+            v-for="movie in movieList"
+            :key="movie._id"
+            :movie="movie"
+          />
+          <!-- @select="gotoDetail" -->
+        </ScrollView>
+      </div>
+      <div
+        v-show="!movieList.length"
+        class="loading-wrap"
+      >
+        <Loading />
+      </div>
+    </div>
+  </Transition>
+</template>
+
+<script>
+import Loading from 'components/Loading'
+import TheBackHeader from 'components//TheBackHeader'
+import ScrollView from 'components/ScrollView'
+import Card from 'components/Card'
+export default {
+  name: 'List',
+  components: {
+    Card,
+    Loading,
+    TheBackHeader,
+    ScrollView
+  },
+  data () {
+    return {
+      movieList: [],
+      count: 0,
+      page: 1,
+      tabs: ['即将上映', '正在热映'],
+      activeIdx: +this.$route.params.type
+    }
+  },
+  created () {
+    this.getMovieList()
+  },
+  beforeRouteUpdate  (to, from, next) {
+    this.page = 1
+    this.movieList = []
+    this.count = 0
+    this.getMovieList()
+    next()
+  },
+  methods: {
+    getMovieList () {
+      const params = {
+        page: this.page,
+        page_size: 10,
+        type: this.$route.params.type
+      }
+      this.$axios.get('/api/movie/get_movies', { params }).then(res => {
+        if (res.code === 1001) {
+          this.movieList = this.movieList.concat(res.result.movies)
+          this.count = res.result.count
+        }
+      })
+    },
+    switchTab (idx) {
+      this.activeIdx = idx
+      this.$router.push(`/list/${idx}`)
+    },
+    loadMore () {
+      const { movieList, count } = this
+      if (movieList.length === count) return
+      this.page += 1
+      this.getMovieList()
+    }
+  }
+}
+</script>
+
+<style lang="stylus" scoped>
+.list
+  position fixed
+  top 0
+  right 0
+  bottom 0
+  left 0
+  background #fff
+  .tabs
+    width 210px
+    height 30px
+    line-height 30px
+    font-size 0
+    border 1px solid #0d121a
+    border-radius 100px
+    background #0d121a
+    .item
+      display inline-block
+      width 50%
+      font-size 15px
+      border-radius 100px
+      &.active
+        background $theme-color
+  .content-wrapper
+    position absolute
+    top 56px
+    bottom 0
+    width 100%
+  .loading-wrap
+    display flex
+    align-items center
+    height 100%
+.fade-enter-active, .fade-leave-active
+  transition all .5s
+.fade-enter, .fade-leave-to
+  transform translateX(100%)
+</style>
