@@ -3,7 +3,7 @@
     <ScrollView :data="movies">
       <ListBLock
         :movies="playingMovies"
-        :title="`正在上映(${playingCount})`"
+        :title="`正在热映(${playingCount})`"
         @more="goMore(1)"
         @select="selectItem"
       />

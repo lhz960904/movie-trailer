@@ -17,7 +17,7 @@
       <div class="content-wrapper">
         <ScrollView
           :data="movieList"
-          :pull-up-load="{ threshold: 50 }"
+          :pull-up-load="true"
           @pulling-up="loadMore"
         >
           <Card
@@ -26,6 +26,16 @@
             :movie="movie"
             @select="gotoDetail"
           />
+          <div class="pull-up-wrap">
+            <p
+              v-show="pullUpLoading"
+            >
+              正在加载...
+            </p>
+            <p v-show="count === movieList.length && count !== 0">
+              —— 没有更多了 ——
+            </p>
+          </div>
         </ScrollView>
       </div>
       <div
@@ -57,7 +67,8 @@ export default {
       count: 0,
       page: 1,
       tabs: ['即将上映', '正在热映'],
-      activeIdx: +this.$route.params.type
+      activeIdx: +this.$route.params.type,
+      pullUpLoading: false
     }
   },
   created () {
@@ -83,6 +94,9 @@ export default {
           this.movieList = this.movieList.concat(res.result.movies)
           this.count = res.result.count
         }
+        this.$nextTick(() => {
+          this.pullUpLoading = false
+        })
       })
     },
     switchTab (idx) {
@@ -93,6 +107,7 @@ export default {
       const { movieList, count } = this
       if (movieList.length === count) return
       this.page += 1
+      this.pullUpLoading = true
       this.getMovieList()
     },
     gotoDetail (id) {
@@ -110,6 +125,7 @@ export default {
   bottom 0
   left 0
   background #fff
+  z-index 10
   .tabs
     width 210px
     height 30px
@@ -130,6 +146,11 @@ export default {
     top 56px
     bottom 0
     width 100%
+    .pull-up-wrap
+      height 30px
+      line-height 30px
+      text-align center
+      color $gray
   .loading-wrap
     display flex
     align-items center
