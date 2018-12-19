@@ -10,7 +10,6 @@
   "dependencies": {
     "axios": "^0.18.0",
     "better-scroll": "^1.13.2",
-    "dayjs": "^1.7.8",
     "vue": "^2.5.17",
     "vue-lazyload": "^1.2.6",
     "vue-router": "^3.0.1",

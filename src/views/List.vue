@@ -24,8 +24,8 @@
             v-for="movie in movieList"
             :key="movie._id"
             :movie="movie"
+            @select="gotoDetail"
           />
-          <!-- @select="gotoDetail" -->
         </ScrollView>
       </div>
       <div
@@ -61,12 +61,13 @@ export default {
     }
   },
   created () {
-    this.getMovieList()
+    this.getMovieList(this.$route.params.type)
   },
   beforeRouteUpdate  (to, from, next) {
     this.page = 1
     this.movieList = []
     this.count = 0
+    this.activeIdx = +to.params.type
     next()
     this.getMovieList()
   },
@@ -93,6 +94,9 @@ export default {
       if (movieList.length === count) return
       this.page += 1
       this.getMovieList()
+    },
+    gotoDetail (id) {
+      this.$router.push(`/movie/${id}`)
     }
   }
 }

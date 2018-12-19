@@ -33,7 +33,7 @@
           </em>
         </div>
         <p class="title">
-          {{ item.title || item.enTitle }}
+          {{ item.title }}
         </p>
       </div>
     </div>

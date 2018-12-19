@@ -1,44 +1,45 @@
 <template>
   <div
     class="card"
-    :class="{'rank-active': rank}"
+    :class="{ 'rank-card': isRank }"
     @click="$emit('select', movie._id)"
   >
     <p
-      v-if="rank"
+      v-if="isRank"
       class="text"
-      :class="'rank-' + index"
+      :class="'rank-' + sort"
     >
-      {{ index }}
+      {{ sort }}
     </p>
     <div class="image">
       <img
         v-lazy="movie.poster"
         :alt="movie.title"
         width="100%"
+        height="100%"
       >
     </div>
     <div class="descript">
       <h1 class="title">
         {{ movie.title }}
       </h1>
-      <div
-        v-if="movie.rate !== 0"
+      <p
+        v-if="movie.isPlay === 1"
         class="rate"
       >
-        <span>观众评</span>
-        <span class="text">
-          {{ movie.rate }}
+        观众评:
+        <span :class="{ 'text': movie.rate > 0 }">
+          {{ movie.rate || '暂无' }}
         </span>
-      </div>
+      </p>
       <p
         v-else
         class="pubdate"
       >
-        上映时间: {{ pubdate }}
+        上映时间: {{ movie.pubdate | removeZh }}
       </p>
       <p class="cast">
-        主演:{{ casts }}
+        主演: {{ casts }}
       </p>
       <p class="duration">
         时长: {{ movie.duration || '未知' }}
@@ -48,37 +49,28 @@
 </template>
 
 <script>
-import dayjs from 'dayjs'
 export default {
+  filters: {
+    removeZh (str) {
+      return str.replace('(中国大陆)', '')
+    }
+  },
   props: {
     movie: {
       type: Object,
       required: true
     },
-    index: {
+    sort: {
       type: Number,
       default: -1
-    },
-    rank: {
-      type: Boolean,
-      default: false
     }
   },
   computed: {
     casts () {
-      let str = ''
-      this.movie.casts.forEach(item => {
-        str += ',' + item.name
-      })
-      return str.substr(1)
+      return this.movie.casts.map(it => it.name).join(',')
     },
-    pubdate () {
-      const pubdate = this.movie.pubdate
-      const date = pubdate[pubdate.length - 1].date
-      return dayjs(date).format('YYYY-MM-DD')
-    },
-    getImageUrl () {
-      return `http://movies.kyriel.cn/${this.movie.posterKey}`
+    isRank () {
+      return this.sort !== -1
     }
   }
 }
@@ -91,7 +83,7 @@ export default {
     height 140px
     align-items center
     box-sizing border-box
-    &.rank-active
+    &.rank-card
       padding-left 0
     .text
       width 30px
@@ -113,6 +105,7 @@ export default {
         color #fff
     .image
       width 80px
+      height 120px
     .descript
       flex 1
       margin-left 10px
