@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="spacing"
-    :style="style"
-  />
+  <div class="spacing" :style="style"/>
 </template>
 
 <script>

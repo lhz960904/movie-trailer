@@ -1,49 +1,18 @@
 <template>
-  <div
-    class="card"
-    :class="{ 'rank-card': isRank }"
-    @click="$emit('select', movie._id)"
-  >
-    <p
-      v-if="isRank"
-      class="text"
-      :class="'rank-' + sort"
-    >
-      {{ sort }}
-    </p>
+  <div class="card" :class="{ 'rank-card': isRank }" @click="$emit('select', movie._id)">
+    <p v-if="isRank" class="text" :class="'rank-' + sort">{{ sort }}</p>
     <div class="image">
-      <img
-        v-lazy="movie.poster"
-        :alt="movie.title"
-        width="100%"
-        height="100%"
-      >
+      <img v-lazy="movie.poster" width="100%" height="100%">
     </div>
     <div class="descript">
-      <h1 class="title">
-        {{ movie.title }}
-      </h1>
-      <p
-        v-if="movie.isPlay === 1"
-        class="rate"
-      >
+      <h1 class="title">{{ movie.title }}</h1>
+      <p v-if="movie.isPlay === 1" class="rate">
         观众评:
-        <span :class="{ 'text': movie.rate > 0 }">
-          {{ movie.rate || '暂无' }}
-        </span>
+        <span :class="{ 'text': movie.rate > 0 }">{{ movie.rate || '暂无' }}</span>
       </p>
-      <p
-        v-else
-        class="pubdate"
-      >
-        上映时间: {{ movie.pubdate | removeZh }}
-      </p>
-      <p class="cast">
-        主演: {{ casts }}
-      </p>
-      <p class="duration">
-        时长: {{ movie.duration || '未知' }}
-      </p>
+      <p v-else class="pubdate">上映时间: {{ movie.pubdate | removeZh }}</p>
+      <p class="cast">主演: {{ casts }}</p>
+      <p class="duration">时长: {{ movie.duration || '未知' }}</p>
     </div>
   </div>
 </template>

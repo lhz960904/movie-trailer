@@ -7,10 +7,7 @@
         @more="goMore(1)"
         @select="selectItem"
       />
-      <Spacing
-        bg-color="#f6f6f6"
-        :height="10"
-      />
+      <Spacing bg-color="#f6f6f6" :height="10"/>
       <ListBLock
         :movies="commingMovies"
         :title="`即将上映(${commingCount})`"

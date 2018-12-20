@@ -1,18 +1,10 @@
 <template>
   <section class="list-block">
-    <div
-      class="info"
-      @click="$emit('more')"
-    >
-      <h1 class="title">
-        {{ title }}
-      </h1>
-      <i class="iconfont icon-right" />
+    <div class="info" @click="$emit('more')">
+      <h1 class="title">{{ title }}</h1>
+      <i class="iconfont icon-right"/>
     </div>
-    <div
-      v-if="movies.length"
-      class="list"
-    >
+    <div v-if="movies.length" class="list">
       <div
         v-for="item in movies"
         :key="item._id"
@@ -20,28 +12,16 @@
         @click="$emit('select', item._id)"
       >
         <div class="image">
-          <img
-            v-lazy="item.poster"
-            width="100%"
-            height="100%"
-          >
-          <em
-            v-if="item.isPlay === 1"
-            class="rate"
-          >
+          <img v-lazy="item.poster" width="100%" height="100%">
+          <em v-if="item.isPlay === 1" class="rate">
             {{ item.rate | toFixed }}
           </em>
         </div>
-        <p class="title">
-          {{ item.title }}
-        </p>
+        <p class="title">{{ item.title }}</p>
       </div>
     </div>
-    <div
-      v-else
-      class="loading-wrap"
-    >
-      <Loading />
+    <div v-else class="loading-wrap">
+      <Loading/>
     </div>
   </section>
 </template>

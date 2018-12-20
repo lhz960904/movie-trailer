@@ -1,18 +1,8 @@
 <template>
   <div class="error">
-    <img
-      src="~common/images/error.png"
-      width="150"
-    >
-    <h1 class="text">
-      出现未知错误
-    </h1>
-    <RouterLink
-      to="/"
-      class="back-btn"
-    >
-      回到首页
-    </RouterLink>
+    <img src="~common/images/error.png" width="150">
+    <h1 class="text">出现未知错误</h1>
+    <RouterLink to="/" class="back-btn">回到首页</RouterLink>
   </div>
 </template>
 

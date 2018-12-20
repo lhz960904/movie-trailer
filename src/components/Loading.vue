@@ -1,10 +1,10 @@
 <template>
   <div class="spinner">
-    <div class="rect rect1" />
-    <div class="rect rect2" />
-    <div class="rect rect3" />
-    <div class="rect rect4" />
-    <div class="rect rect5" />
+    <div class="rect rect1"/>
+    <div class="rect rect2"/>
+    <div class="rect rect3"/>
+    <div class="rect rect4"/>
+    <div class="rect rect5"/>
   </div>
 </template>
 

@@ -15,11 +15,7 @@
         </div>
       </TheBackHeader>
       <div class="content-wrapper">
-        <ScrollView
-          :data="movieList"
-          :pull-up-load="true"
-          @pulling-up="loadMore"
-        >
+        <ScrollView :data="movieList" :pull-up-load="true" @pulling-up="loadMore">
           <Card
             v-for="movie in movieList"
             :key="movie._id"
@@ -27,22 +23,13 @@
             @select="gotoDetail"
           />
           <div class="pull-up-wrap">
-            <p
-              v-show="pullUpLoading"
-            >
-              正在加载...
-            </p>
-            <p v-show="count === movieList.length && count !== 0">
-              —— 没有更多了 ——
-            </p>
+            <p v-show="pullUpLoading">正在加载...</p>
+            <p v-show="noMore">没有更多了~</p>
           </div>
         </ScrollView>
       </div>
-      <div
-        v-show="!movieList.length"
-        class="loading-wrap"
-      >
-        <Loading />
+      <div v-show="!movieList.length" class="loading-wrap">
+        <Loading/>
       </div>
     </div>
   </Transition>
@@ -69,6 +56,11 @@ export default {
       tabs: ['即将上映', '正在热映'],
       activeIdx: +this.$route.params.type,
       pullUpLoading: false
+    }
+  },
+  computed: {
+    noMore () {
+      return this.count === this.movieList.length && this.count !== 0
     }
   },
   created () {
