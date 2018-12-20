@@ -40,6 +40,7 @@ import Loading from 'components/Loading'
 import TheBackHeader from 'components//TheBackHeader'
 import ScrollView from 'components/ScrollView'
 import Card from 'components/Card'
+
 export default {
   name: 'List',
   components: {
