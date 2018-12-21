@@ -96,13 +96,13 @@ export default {
 
       const params = { keyword: query }
       this.timer = setTimeout(() => {
-        this.saveSearchHistory(query)
         this.$axios.get('api/movie/search', { params }).then(res => {
           if (res.code === 1001) {
             this.movieList = res.result.movies
             this.isShow = true
           }
         })
+        this.saveSearchHistory(query)
       }, 500)
     },
     showConfirm () {
