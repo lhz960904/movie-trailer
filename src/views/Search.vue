@@ -17,12 +17,10 @@
           </span>
         </div>
       </div>
-      <Spacing bg-color="#f6f6f6" :height="10"/>
-      <div class="history-wrap">
+      <div v-if="searchHistory.length" class="history-wrap">
         <div class="title">
           <span>搜索历史</span>
-          <!-- @click="showConfirm" -->
-          <i class="iconfont icon-clear"/>
+          <i class="iconfont icon-clear" @click="showConfirm"/>
         </div>
         <div v-for="item in searchHistory" :key="item" class="item">
           <i class="iconfont icon-history"/>
@@ -30,22 +28,38 @@
           <i class="iconfont icon-del" @click="deleteSearchHistory(item)"/>
         </div>
       </div>
-      <div class="result-wrap"/>
     </ScrollView>
+    <div v-show="isShow" class="result-wrap">
+      <ScrollView :data="movieList">
+        <Card
+          v-for="movie in movieList"
+          :key="movie._id"
+          :movie="movie"
+          @select="selectItem"
+        />
+      </ScrollView>
+      <div v-show="!movieList.length" class="no-result">
+        <img src="~common/images/noresult.png" class="img">
+        <p class="text">没有找到相关内容</p>
+      </div>
+    </div>
+    <Confirm ref="confirm" content="是否删除所有搜索历史" @confirm="clearSearchHistory"/>
   </div>
 </template>
 
 <script>
 import SearchBox from 'components/SearchBox'
-import Spacing from 'components/Spacing'
 import ScrollView from 'components/ScrollView'
+import Confirm from 'components/Confirm'
+import Card from 'components/Card'
 import { mapState, mapMutations } from 'vuex'
 
 export default {
   components: {
     SearchBox,
-    Spacing,
-    ScrollView
+    ScrollView,
+    Confirm,
+    Card
   },
   data () {
     return {
@@ -84,9 +98,15 @@ export default {
       this.timer = setTimeout(() => {
         this.saveSearchHistory(query)
         this.$axios.get('api/movie/search', { params }).then(res => {
-          console.log(res)
+          if (res.code === 1001) {
+            this.movieList = res.result.movies
+            this.isShow = true
+          }
         })
       }, 500)
+    },
+    showConfirm () {
+      this.$refs.confirm.show()
     },
     clear () {
       this.movieList = []
@@ -95,6 +115,9 @@ export default {
     addQuery (query) {
       this.$refs.searchBox.setQuery(query)
       this.search(query)
+    },
+    selectItem (id) {
+      this.$router.push(`/movie/${id}`)
     },
     ...mapMutations([
       'saveSearchHistory',
@@ -108,6 +131,7 @@ export default {
 <style lang="stylus" scoped>
 .search
   height 100%
+  background #f9f9f9
   .input-wrap
     background #f5f5f5
     padding: 10px 15px
@@ -153,4 +177,23 @@ export default {
         margin-right 10px
       .text
         flex 1
+  .result-wrap
+    position fixed
+    top 111px
+    bottom 0
+    width 100%
+    overflow scroll
+    background #fff
+    .no-result
+      position absolute
+      top 40%
+      left 50%
+      transform translate(-50%,-50%)
+      color #999
+      text-align center
+      .img
+        width 100px
+        height 100px
+        filter grayscale(1)
+        margin-bottom 15px
 </style>
