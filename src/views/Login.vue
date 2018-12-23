@@ -1,64 +1,74 @@
 <template>
-  <Transition name="fade">
-    <div class="login">
-      <TheBackHeader>
-        <img src="~common/images/logo.png" width="70">
-      </TheBackHeader>
-      <div class="wrapper">
-        <section class="form-box">
-          <div class="item">
-            <i class="iconfont icon-email"/>
-            <input
-              v-model="email"
-              type="text"
-              placeholder="登录邮箱"
-              @focus="errMsg = ''"
-            >
-            <i v-show="email" class="iconfont icon-delete" @click="email = ''"/>
+  <div>
+    <Transition name="fade">
+      <div class="login">
+        <TheBackHeader>
+          <img src="~common/images/logo.png" width="70">
+        </TheBackHeader>
+        <div class="wrapper">
+          <section class="form-box">
+            <div class="item">
+              <i class="iconfont icon-email"/>
+              <input
+                v-model="email"
+                type="text"
+                placeholder="登录邮箱"
+                @focus="errMsg = ''"
+              >
+              <i v-show="email" class="iconfont icon-delete" @click="email = ''"/>
+            </div>
+            <div v-show="isSignUp" class="item">
+              <i class="iconfont icon-user1"/>
+              <input
+                v-model="username"
+                type="text"
+                placeholder="用户名"
+                @focus="errMsg = ''"
+              >
+            </div>
+            <div class="item">
+              <i class="iconfont icon-lock"/>
+              <input
+                v-model="password"
+                type="password"
+                placeholder="密码"
+                @focus="errMsg = ''"
+              >
+            </div>
+          </section>
+          <div class="btn-wrapper">
+            <button @click="check">{{ !isSignUp ? '登录' : '注册' }}</button>
           </div>
-          <div v-show="isSignUp" class="item">
-            <i class="iconfont icon-user1"/>
-            <input
-              v-model="username"
-              type="text"
-              placeholder="用户名"
-              @focus="errMsg = ''"
-            >
+          <div class="text-wrapper">
+            <Transition name="err">
+              <p v-show="errMsg" class="errmsg">{{ errMsg }}</p>
+            </Transition>
+            <p v-if="isSignUp" class="register" @click="changeType">立即登录</p>
+            <p v-else class="register" @click="changeType">免费注册</p>
           </div>
-          <div class="item">
-            <i class="iconfont icon-lock"/>
-            <input
-              v-model="password"
-              type="password"
-              placeholder="密码"
-              @focus="errMsg = ''"
-            >
-          </div>
-        </section>
-        <div class="btn-wrapper">
-          <button @click="check">{{ !isSignUp ? '登录' : '注册' }}</button>
-        </div>
-        <div class="text-wrapper">
-          <Transition name="err">
-            <p v-show="errMsg" class="errmsg">{{ errMsg }}</p>
-          </Transition>
-          <p v-if="isSignUp" class="register" @click="changeType">立即登录</p>
-          <p v-else class="register" @click="changeType">免费注册</p>
         </div>
       </div>
-    </div>
-  </Transition>
+    </Transition>
+    <Confirm
+      ref="confirm"
+      :content="confirmText"
+      confirm-btn-text="前往"
+      @confirm="changeType"
+    />
+  </div>
 </template>
 
 <script>
 import TheBackHeader from 'components/TheBackHeader'
+import Confirm from 'components/Confirm'
 import Cookie from 'js-cookie'
 
 const COOKIE_NAME = 'movie_trailer_user'
 
 export default {
   components: {
-    TheBackHeader
+    TheBackHeader,
+    Confirm
   },
   data () {
     return {
@@ -66,7 +76,8 @@ export default {
       username: '',
       password: '',
       errMsg: '',
-      loignType: 0 // 0 代表登录，1 代表注册
+      loignType: 0, // 0 代表登录，1 代表注册
+      confirmText: ''
     }
   },
   computed: {
@@ -93,8 +104,11 @@ export default {
       !this.isSignUp ? this.login() : this.register()
     },
     login () {
-      const params = { email: this.email, password: this.password }
-      this.$axios.post('/api/user/login', params).then(res => {
+      const { email, password } = this
+      this.$axios.post('/api/user/login', {
+        email,
+        password
+      }).then(res => {
         if (res.code === 1001) {
           Cookie.set(COOKIE_NAME, res.result.user, { expires: 1 })
           this.$router.replace('/user')
@@ -104,11 +118,25 @@ export default {
       })
     },
     register () {
-      console.log('regisyet')
+      const { email, username, password } = this
+      this.$axios.post('/api/user/register', {
+        email,
+        username,
+        password
+      }).then(res => {
+        if (res.code === 1001) {
+          this.confirmText = '注册成功！是否前往登录'
+        } else {
+          this.confirmText = '邮箱已存在！是否直接登录'
+        }
+        this.$refs.confirm.show()
+      })
     },
     changeType () {
       this.email = ''
+      this.username = ''
       this.password = ''
+      this.errMsg = ''
       this.loignType = 1 - this.loignType
     }
   }

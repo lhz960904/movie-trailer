@@ -1,5 +1,5 @@
 <template>
-  <Transition name="fade">
+  <Transition name="confirm">
     <div v-show="showFlag" class="confirm">
       <div class="confirm-wrapper">
         <div class="confirm-content">
@@ -63,7 +63,7 @@ export default {
   bottom 0
   z-index 99
   background rgba(0, 0, 0, 0.6)
-  &.fade-enter-active
+  &.confirm-enter-active
     animation confirm-fadein 0.3s
     .confirm-content
       animation confirm-zoom 0.3s
