@@ -1,10 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import store from '@/store'
 const Recommend = () => import('views/Recommend')
 const Category = () => import('views/Category')
 const Rank = () => import('views/Rank')
 const Search = () => import('views/Search')
 const User = () => import('views/User')
+const Login = () => import('views/Login')
 const List = () => import('views/List')
 const ErrorPage = () => import('views/Error')
 
@@ -41,7 +43,19 @@ export default new Router({
     {
       path: '/user',
       name: 'user',
-      component: User
+      component: User,
+      beforeEnter: (to, from, next) => {
+        if (!store.state.user) {
+          next('/login')
+          return
+        }
+        next()
+      }
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: Login
     },
     {
       path: '/list/:type',
