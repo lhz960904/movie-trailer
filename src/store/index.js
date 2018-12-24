@@ -35,6 +35,9 @@ export default new Vuex.Store({
     },
     clearSearchHistory (state) {
       state.searchHistory = clearSearch()
+    },
+    setUserInfo (state, info) {
+      state.user = info
     }
   },
   plugins: debug ? [createLogger()] : []

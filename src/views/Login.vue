@@ -111,6 +111,7 @@ export default {
       }).then(res => {
         if (res.code === 1001) {
           Cookie.set(COOKIE_NAME, res.result.user, { expires: 1 })
+          this.$store.commit('setUserInfo', res.result.user)
           this.$router.push('/user')
         } else {
           this.errMsg = res.errmsg
