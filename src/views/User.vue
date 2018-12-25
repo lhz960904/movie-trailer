@@ -40,12 +40,23 @@ import { mapState } from 'vuex'
 const COOKIE_NAME = 'movie_trailer_user'
 
 export default {
+  name: 'User',
   computed: {
     ...mapState([
       'user'
     ])
   },
+  created () {
+    this.getUserInfo()
+  },
   methods: {
+    getUserInfo () {
+      this.$axios.get('/api/user/get_info').then(res => {
+        if (res.code === 1001) {
+          this.$store.commit('setUserInfo', res.result)
+        }
+      })
+    },
     logout () {
       this.$axios.post('/api/user/logout').then(res => {
         if (res.code === 1001) {

@@ -61,9 +61,6 @@
 <script>
 import TheBackHeader from 'components/TheBackHeader'
 import Confirm from 'components/Confirm'
-import Cookie from 'js-cookie'
-
-const COOKIE_NAME = 'movie_trailer_user'
 
 export default {
   components: {
@@ -110,7 +107,6 @@ export default {
         password
       }).then(res => {
         if (res.code === 1001) {
-          Cookie.set(COOKIE_NAME, res.result.user, { expires: 1 })
           this.$store.commit('setUserInfo', res.result.user)
           this.$router.push('/user')
         } else {

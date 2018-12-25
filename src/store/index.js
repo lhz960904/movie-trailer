@@ -37,6 +37,7 @@ export default new Vuex.Store({
       state.searchHistory = clearSearch()
     },
     setUserInfo (state, info) {
+      Cookie.set(COOKIE_NAME, info, { expires: 1 })
       state.user = info
     }
   },

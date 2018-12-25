@@ -2,7 +2,7 @@
   <div id="app">
     <TheHeader/>
     <div class="content">
-      <KeepAlive>
+      <KeepAlive :exclude="exclude">
         <RouterView/>
       </KeepAlive>
     </div>
@@ -15,6 +15,11 @@ export default {
   name: 'App',
   components: {
     TheHeader
+  },
+  data () {
+    return {
+      exclude: ['User']
+    }
   }
 }
 </script>
