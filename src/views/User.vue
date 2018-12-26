@@ -22,7 +22,7 @@
             <i class="iconfont icon-collect"/>
             <span class="text">我的收藏</span>
             <i class="iconfont icon-right"/>
-            <span v-if="user.collects.length" class="text count">{{ user.collects.length }}</span>
+            <span v-if="collectMovies.length" class="text count">{{ collectMovies.length }}</span>
           </li>
         </ul>
       </div>
@@ -41,6 +41,11 @@ const COOKIE_NAME = 'movie_trailer_user'
 
 export default {
   name: 'User',
+  data () {
+    return {
+      collectMovies: []
+    }
+  },
   computed: {
     ...mapState([
       'user'
@@ -51,9 +56,9 @@ export default {
   },
   methods: {
     getUserInfo () {
-      this.$axios.get('/api/user/get_info').then(res => {
+      this.$axios.get('/api/user/get_collects').then(res => {
         if (res.code === 1001) {
-          this.$store.commit('setUserInfo', res.result)
+          this.collectMovies = res.result.movies
         }
       })
     },
