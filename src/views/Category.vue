@@ -6,7 +6,7 @@
           v-for="(item, index) in cats"
           :key="item"
           class="item"
-          :class="{'active': index === activeTabIdx, 'disable': index === 2 && type === 0}"
+          :class="getCls(index)"
           @click="switchTab(index)"
         >
           <span class="text">{{ item }}</span>
@@ -14,32 +14,20 @@
         </div>
       </div>
       <div v-show="activeTabIdx !== -1" class="tab-content">
-        <div v-show="activeTabIdx === 0" class="category-wrapper">
-          <div class="list">
-            <span
-              v-for="item in cateList"
-              :key="item._id"
-              :class="{'active': categories.includes(item.name)}"
-              class="item"
-              @click="selectCategory(item.name)"
-            >
-              {{ item.name }}
-            </span>
-          </div>
-          <button class="confirm-btn" @click="confirm">完成</button>
-        </div>
-        <div v-show="activeTabIdx === 1" class="type-wrapper">
-          <div
-            v-for="item in pubdates"
-            :key="item.name"
-            class="item"
-            :class="{'active': type === item.type}"
-            @click="selectType(item)"
-          >
-            <i class="iconfont icon-dui"/>
-            <span class="text">{{ item.name }}</span>
-          </div>
-        </div>
+        <SizerCategory
+          v-show="activeTabIdx === 0"
+          ref="sizerCategory"
+          v-model="params.categories"
+          @change="getMovies"
+        />
+        <SizerType
+          v-show="activeTabIdx === 1"
+          :status="params.type"
+          @change="changeType"
+        />
+        <SizerRate
+          v-show="activeTabIdx === 2"
+        />
       </div>
       <div v-show="activeTabIdx !== -1" class="mask" @click="closeTab"/>
     </div>
@@ -64,6 +52,9 @@
 </template>
 
 <script>
+import SizerCategory from 'components/SizerCategory'
+import SizerType from 'components/SizerType'
+import SizerRate from 'components/SizerRate'
 import Card from 'components/Card'
 import ScrollView from 'components/ScrollView'
 import Loading from 'components/Loading'
@@ -72,43 +63,36 @@ export default {
   components: {
     Card,
     Loading,
-    ScrollView
+    ScrollView,
+    SizerType,
+    SizerRate,
+    SizerCategory
   },
   data () {
     return {
       cats: ['分类', '已上映', '评分'],
       activeTabIdx: -1,
       movies: [],
-      categories: [],
-      cateList: [],
-      rate: [0, 10],
-      type: 1,
+      params: {
+        categories: [],
+        rate: [0, 10],
+        type: 1
+      },
       loading: true
     }
   },
-  watch: {
-    activeTabIdx (newVal, oldVal) {
-      if (newVal !== 0 && this.cacheArr) {
-        this.categories = this.cacheArr
-      }
-    }
-  },
   created () {
-    this.pubdates = [
-      { name: '全部', type: '' },
-      { name: '已上映', type: 1 },
-      { name: '未上映', type: 0 }
-    ]
-    this.getCategories()
     this.getMovies()
   },
   methods: {
     getMovies () {
+      this.activeTabIdx = -1
       this.loading = true
+      const { categories, rate, type } = this.params
       const params = {
-        categories: JSON.stringify(this.categories),
-        rate: JSON.stringify(this.rate),
-        type: this.type
+        categories: JSON.stringify(categories),
+        rate: JSON.stringify(rate),
+        type: type
       }
       this.$axios.get('/api/movie/get_special_movies', { params }).then(res => {
         if (res.code === 1001) {
@@ -117,48 +101,40 @@ export default {
         this.loading = false
       })
     },
-    getCategories () {
-      this.$axios.get('/api/category/get_cates').then(res => {
-        if (res.code === 1001) {
-          this.cateList = res.result.cates
-        }
-      })
+    // 切换 type、tab[1] 名字
+    changeType ({ type, name }) {
+      this.params.type = type
+      this.cats[1] = name
+      this.getMovies()
     },
     switchTab (idx) {
+      // 点击相同
+      if (idx === this.activeTabIdx) {
+        this.activeTabIdx = -1
+        return
+      }
+
       // 当选择未上映的时候，评分不可选
-      if (this.type === 0 && idx === 2) return
-      // 缓存分类
+      if (this.params.type === 0 && idx === 2) return
+
+      // 当从其他tab点击第一个时，重置组件cacheList
       if (idx === 0) {
-        this.cacheArr = this.categories
+        this.$refs.sizerCategory.resetCache()
       }
+
       this.activeTabIdx = idx
-    },
-    selectType ({ name, type }) {
-      this.type = type
-      this.cats[1] = name
-      this.activeTabIdx = -1
-      this.getMovies()
-    },
-    selectCategory (name) {
-      const arr = this.categories.slice()
-      const idx = arr.indexOf(name)
-      if (idx > -1) {
-        arr.splice(idx, 1)
-      } else {
-        arr.push(name)
-      }
-      this.categories = arr
-    },
-    confirm () {
-      this.cacheArr = this.categories
-      this.activeTabIdx = -1
-      this.getMovies()
     },
     selectItem (id) {
       this.$router.push(`/movie/${id}`)
     },
     closeTab () {
       this.activeTabIdx = -1
+    },
+    getCls (index) {
+      return {
+        'active': index === this.activeTabIdx,
+        'disable': index === 2 && this.params.type === 0
+      }
     }
   }
 }
@@ -201,49 +177,6 @@ export default {
       min-height 50px
       background #fff
       z-index 10
-      .category-wrapper
-        padding 10px 25px
-        .list
-          display flex
-          flex-wrap wrap
-          .item
-            padding 6px 12px
-            margin: 0 10px 10px 0
-            border-radius 5px
-            font-size 13px
-            color #777
-            border 1px solid #ccc
-            &.active
-              border-color #faaf00
-              background #faaf00
-              color #fff
-        .confirm-btn
-          width 60px
-          height 30px
-          background #409eff
-          color #fff
-          border none
-          outline none
-          border-radius 3px
-    .type-wrapper
-      display flex
-      flex-direction column
-      background #fff
-      .item
-        position relative
-        flex 1
-        line-height 40px
-        margin 0 30px
-        color #333
-        border-bottom 1px solid #e5e5e5
-        .icon-dui
-          display none
-          position absolute
-          left -25px
-        &.active
-          color #faaf00
-          .icon-dui
-            display inline
   .mask
     position fixed
     top 96px
