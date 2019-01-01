@@ -3,13 +3,22 @@
     <div
       ref="bar"
       class="bar"
-      @touchstart="touchStart"
-      @touchmove="touchMove"
-      @touchend="touchEnd"
     >
-      <!--  -->
       <div class="mask" :style="style"/>
-      <div class="bar-btn"/>
+      <div
+        ref="barBtn1"
+        class="bar-btn"
+        @touchstart.prevent="touchStart"
+        @touchmove.prevent="touchMove"
+        @touchend="touchEnd"
+      />
+      <div
+        ref="barBtn2"
+        class="bar-btn"
+        @touchstart.prevent="touchStart"
+        @touchmove.prevent="touchMove"
+        @touchend="touchEnd"
+      />
     </div>
     <button class="confirm-btn" @click="confirm">完成</button>
   </div>
@@ -29,6 +38,9 @@ export default {
       style: {}
     }
   },
+  created () {
+    this.touch = {}
+  },
   mounted () {
     // const bar = this.$refs.bar
     // console.log(bar.getBoundingClientRect())
@@ -41,15 +53,14 @@ export default {
       this.cacheRate = this.rate
       const [start, end] = this.cacheRate
       const styleWidth = (end - start) * this.width / 10
-      console.log(start, end)
-      console.log(styleWidth)
-      this.style = {
-        width: styleWidth + 'px',
-        left: this.dots[start - 1] + 'px'
-      }
+
+      this.$refs.barBtn1.style.left = this.dots[start - 1] + 'px'
+      this.$refs.barBtn2.style.left = this.dots[start - 1] + styleWidth + 'px'
+
+      this.setStyle()
     },
     generateDots () {
-      this.dots = []
+      this.dots = [0]
       this.width = this.$refs.bar.getBoundingClientRect().width
       for (let i = 1; i < 10; i++) {
         const dot = document.createElement('div')
@@ -59,15 +70,46 @@ export default {
         dot.style.left = left + 'px'
         this.$refs.bar.appendChild(dot)
       }
+      this.dots.push(this.width)
+    },
+    setStyle () {
+      const x1 = parseFloat(this.$refs.barBtn1.style.left)
+      const x2 = parseFloat(this.$refs.barBtn2.style.left)
+      const position = [x1, x2].sort((a, b) => a - b)
+      this.style = {
+        width: (position[1] - position[0]) + 'px',
+        left: position[0] + 'px'
+      }
     },
     touchStart (e) {
-      console.log(e.touches[0].pageX)
+      this.touch.initiated = true
+      this.touch.startX = parseFloat(e.target.style.left)
+      this.touch.left = parseFloat(e.target.style.left)
+      e.target.style.transform = 'scale(1.2)'
+      // console.log(this.touch)
     },
     touchMove (e) {
-      console.log(e.touches[0].pageX)
+      if (!this.touch.initiated) return
+      const deltaX = e.touches[0].pageX - this.touch.startX - 30
+      const offSetWidth = Math.min(Math.max(0, this.touch.left + deltaX), this.width - 14)
+
+      const deltaArr = this.dots.map(it => Math.abs(parseFloat(it - offSetWidth)))
+      const min = Math.min(...deltaArr)
+      const minIndx = deltaArr.findIndex(it => it === min)
+
+      // const minIndex = this.dots.reduce((res, it, index) => {
+      //   const delta1 = Math.abs(parseInt(res - offSetWidth))
+      //   const delta2 = Math.abs(parseInt(it - offSetWidth))
+      //   return delta1 > delta2 ? index : res
+      // })
+      // console.log(minIndx)
+      e.target.style.left = this.dots[minIndx] + 'px'
+      this.setStyle()
+      // console.log(e.touches[0].pageX)
     },
-    touchEnd () {
-      console.log(this.$refs.bar.getBoundingClientRect())
+    touchEnd (e) {
+      this.touch.initiated = false
+      e.target.style.transform = 'scale(1.0)'
     },
     confirm () {
       this.$emit('change', this.cacheRate)
@@ -95,6 +137,16 @@ export default {
       height 5px
       border-radius 100%
       background #fff
+    .bar-btn
+      position absolute
+      left 0
+      top -5px
+      width 10px
+      height 10px
+      border 2px solid #ffc46c
+      background-color #fff
+      border-radius 50%
+      z-index 10
     .mask
       position absolute
       height 5px
@@ -103,7 +155,7 @@ export default {
 .confirm-btn
   width 60px
   height 30px
-  margin-top 10px
+  margin-top 20px
   background #409eff
   color #fff
   border none
