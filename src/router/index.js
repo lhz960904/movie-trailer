@@ -6,6 +6,7 @@ const Category = () => import('views/Category')
 const Rank = () => import('views/Rank')
 const Search = () => import('views/Search')
 const User = () => import('views/User')
+const Movie = () => import('views/Movie')
 const Login = () => import('views/Login')
 const List = () => import('views/List')
 const ErrorPage = () => import('views/Error')
@@ -51,6 +52,11 @@ export default new Router({
         }
         next()
       }
+    },
+    {
+      path: '/movie/:id',
+      name: 'movie',
+      component: Movie
     },
     {
       path: '/login',

@@ -27,6 +27,8 @@
         />
         <SizerRate
           v-show="activeTabIdx === 2"
+          ref="sizerRate"
+          :rate="params.rate"
         />
       </div>
       <div v-show="activeTabIdx !== -1" class="mask" @click="closeTab"/>
@@ -71,11 +73,11 @@ export default {
   data () {
     return {
       cats: ['分类', '已上映', '评分'],
-      activeTabIdx: -1,
+      activeTabIdx: 2,
       movies: [],
       params: {
         categories: [],
-        rate: [0, 10],
+        rate: [5, 9],
         type: 1
       },
       loading: true
@@ -117,12 +119,18 @@ export default {
       // 当选择未上映的时候，评分不可选
       if (this.params.type === 0 && idx === 2) return
 
+      this.activeTabIdx = idx
+
       // 当从其他tab点击第一个时，重置组件cacheList
       if (idx === 0) {
         this.$refs.sizerCategory.resetCache()
       }
 
-      this.activeTabIdx = idx
+      if (idx === 2) {
+        this.$nextTick(() => {
+          this.$refs.sizerRate.resetCache()
+        })
+      }
     },
     selectItem (id) {
       this.$router.push(`/movie/${id}`)
