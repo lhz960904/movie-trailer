@@ -28,7 +28,8 @@
         <SizerRate
           v-show="activeTabIdx === 2"
           ref="sizerRate"
-          :rate="params.rate"
+          v-model="params.rate"
+          @change="getMovies"
         />
       </div>
       <div v-show="activeTabIdx !== -1" class="mask" @click="closeTab"/>
@@ -77,7 +78,7 @@ export default {
       movies: [],
       params: {
         categories: [],
-        rate: [5, 9],
+        rate: [0, 10],
         type: 1
       },
       loading: true

@@ -8,6 +8,7 @@
       <div
         ref="barBtn1"
         class="bar-btn"
+        data-idx="1"
         @touchstart.prevent="touchStart"
         @touchmove.prevent="touchMove"
         @touchend="touchEnd"
@@ -15,6 +16,7 @@
       <div
         ref="barBtn2"
         class="bar-btn"
+        data-idx="2"
         @touchstart.prevent="touchStart"
         @touchmove.prevent="touchMove"
         @touchend="touchEnd"
@@ -26,6 +28,10 @@
 
 <script>
 export default {
+  model: {
+    prop: 'rate',
+    event: 'change'
+  },
   props: {
     rate: {
       type: Array,
@@ -41,24 +47,21 @@ export default {
   created () {
     this.touch = {}
   },
-  mounted () {
-    // const bar = this.$refs.bar
-    // console.log(bar.getBoundingClientRect())
-  },
   methods: {
     resetCache () {
       if (!this.dots) {
         this.generateDots()
       }
-      this.cacheRate = this.rate
-      const [start, end] = this.cacheRate
-      const styleWidth = (end - start) * this.width / 10
 
-      this.$refs.barBtn1.style.left = this.dots[start - 1] + 'px'
-      this.$refs.barBtn2.style.left = this.dots[start - 1] + styleWidth + 'px'
+      this.cacheRate = this.rate
+
+      const [start, end] = this.cacheRate
+      this.$refs.barBtn1.style.left = this.dots[start] + 'px'
+      this.$refs.barBtn2.style.left = this.dots[end] + 'px'
 
       this.setStyle()
     },
+    // 生成rateBar上面的阈值点，起始是0，末尾是总长度。
     generateDots () {
       this.dots = [0]
       this.width = this.$refs.bar.getBoundingClientRect().width
@@ -66,15 +69,18 @@ export default {
         const dot = document.createElement('div')
         dot.className = 'bar-dot'
         const left = i * 0.1 * this.width
-        this.dots.push(left)
-        dot.style.left = left + 'px'
+        console.log(parseInt(left) - 7)
+        this.dots.push(parseInt(left) - 7)
+        dot.style.left = parseInt(left) + 'px'
         this.$refs.bar.appendChild(dot)
       }
-      this.dots.push(this.width)
+      // 减去btn的宽度
+      this.dots.push(this.width - 7)
     },
+    // 设置mask黄色区块的长度和偏移量
     setStyle () {
-      const x1 = parseFloat(this.$refs.barBtn1.style.left)
-      const x2 = parseFloat(this.$refs.barBtn2.style.left)
+      const x1 = parseInt(this.$refs.barBtn1.style.left)
+      const x2 = parseInt(this.$refs.barBtn2.style.left)
       const position = [x1, x2].sort((a, b) => a - b)
       this.style = {
         width: (position[1] - position[0]) + 'px',
@@ -83,35 +89,32 @@ export default {
     },
     touchStart (e) {
       this.touch.initiated = true
-      this.touch.startX = parseFloat(e.target.style.left)
-      this.touch.left = parseFloat(e.target.style.left)
-      e.target.style.transform = 'scale(1.2)'
-      // console.log(this.touch)
+      e.target.style.transform = 'scale(1.3)'
     },
     touchMove (e) {
       if (!this.touch.initiated) return
-      const deltaX = e.touches[0].pageX - this.touch.startX - 30
-      const offSetWidth = Math.min(Math.max(0, this.touch.left + deltaX), this.width - 14)
-
-      const deltaArr = this.dots.map(it => Math.abs(parseFloat(it - offSetWidth)))
+      const otherIdx = this.dots.indexOf(parseInt(e.target.style.left))
+      // console.log(otherIdx)
+      const otherRate = this.cacheRate[1 - this.cacheRate.indexOf(otherIdx)]
+      const offSetWidth = Math.min(Math.max(0, e.touches[0].pageX - 30), this.width)
+      const deltaArr = this.dots.map(it => Math.abs(parseInt(it - offSetWidth)))
       const min = Math.min(...deltaArr)
       const minIndx = deltaArr.findIndex(it => it === min)
-
-      // const minIndex = this.dots.reduce((res, it, index) => {
-      //   const delta1 = Math.abs(parseInt(res - offSetWidth))
-      //   const delta2 = Math.abs(parseInt(it - offSetWidth))
-      //   return delta1 > delta2 ? index : res
-      // })
-      // console.log(minIndx)
+      // console.log(this.dots)
+      // console.log(this.dots[minIndx])
       e.target.style.left = this.dots[minIndx] + 'px'
+
+      this.cacheRate = [otherRate, minIndx].sort((a, b) => a - b)
+      // console.log(this.cacheRate)
+
       this.setStyle()
-      // console.log(e.touches[0].pageX)
     },
     touchEnd (e) {
       this.touch.initiated = false
       e.target.style.transform = 'scale(1.0)'
     },
     confirm () {
+      console.log(this.cacheRate)
       this.$emit('change', this.cacheRate)
     }
   }
