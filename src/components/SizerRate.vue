@@ -121,7 +121,7 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
 .rate-wrapper
   display flex
   flex-direction column
@@ -134,12 +134,6 @@ export default {
     height 5px
     background-color #ccc
     border-radius 3px
-    .bar-dot
-      position absolute
-      width 5px
-      height 5px
-      border-radius 100%
-      background #fff
     .bar-btn
       position absolute
       left 0
@@ -164,4 +158,12 @@ export default {
   border none
   outline none
   border-radius 3px
+</style>
+<style lang="stylus">
+.bar-dot
+  position absolute
+  width 5px
+  height 5px
+  border-radius 100%
+  background #fff
 </style>

@@ -65,7 +65,7 @@ export default {
     }
   },
   created () {
-    this.getMovieList(this.$route.params.type)
+    this.getMovieList()
   },
   beforeRouteUpdate  (to, from, next) {
     this.page = 1
@@ -148,8 +148,8 @@ export default {
     display flex
     align-items center
     height 100%
-.fade-enter-active, .fade-leave-active
+.fade-leave-active
   transition all .5s
-.fade-enter, .fade-leave-to
+.fade-leave-to
   transform translateX(100%)
 </style>
