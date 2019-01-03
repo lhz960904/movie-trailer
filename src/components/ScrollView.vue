@@ -31,6 +31,11 @@ export default {
       this.initScroll()
     }, 20)
   },
+  activated () {
+    if (this.data.length) {
+      this.refresh()
+    }
+  },
   methods: {
     initScroll () {
       if (!this.$refs.wrapper) {
