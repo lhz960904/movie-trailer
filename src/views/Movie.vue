@@ -93,8 +93,6 @@
 </template>
 
 <script>
-import 'dplayer/dist/DPlayer.min.css'
-import DPlayer from 'dplayer'
 
 export default {
   name: 'Movie',
@@ -141,6 +139,7 @@ export default {
       this.$router.replace(`/movie/${id}`)
     },
     initPlayer () {
+      const { DPlayer } = window
       this.player = new DPlayer({
         container: this.$refs.player,
         video: {

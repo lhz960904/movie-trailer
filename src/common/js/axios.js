@@ -3,6 +3,7 @@ import router from '@/router'
 import Cookie from 'js-cookie'
 
 const instance = axios.create({
+  timeout: 60000,
   baseURL: '/'
 })
 const COOKIE_NAME = 'movie_trailer_user'
@@ -15,7 +16,7 @@ instance.interceptors.response.use(res => {
     router.replace('/login')
     return
   }
-  return data
+  return Promise.resolve(data)
 }, () => {
   router.push('/error')
 })
