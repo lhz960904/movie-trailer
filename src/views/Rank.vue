@@ -16,16 +16,8 @@
 </template>
 
 <script>
-import ScrollView from 'components/ScrollView'
-import Loading from 'components/Loading'
-import Card from 'components/Card'
 
 export default {
-  components: {
-    ScrollView,
-    Loading,
-    Card
-  },
   data () {
     return {
       movieList: []

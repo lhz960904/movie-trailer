@@ -27,12 +27,10 @@
 </template>
 
 <script>
-import Loading from 'components/Loading'
+
 export default {
   name: 'ListBlock',
-  components: {
-    Loading
-  },
+
   filters: {
     toFixed (num) {
       return num.toFixed(1)

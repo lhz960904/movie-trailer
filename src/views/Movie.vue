@@ -95,17 +95,9 @@
 <script>
 import 'dplayer/dist/DPlayer.min.css'
 import DPlayer from 'dplayer'
-import ScrollView from 'components/ScrollView'
-import Spacing from 'components/Spacing'
-import Loading from 'components/Loading'
 
 export default {
   name: 'Movie',
-  components: {
-    ScrollView,
-    Spacing,
-    Loading
-  },
   data () {
     return {
       movie: {},
