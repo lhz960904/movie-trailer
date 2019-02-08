@@ -21,7 +21,7 @@ const cdn = {
   ]
 }
 
-var externals = {
+const externals = {
   vue: 'Vue',
   axios: 'axios',
   'vue-router': 'VueRouter',
@@ -29,7 +29,11 @@ var externals = {
   dplayer: 'DPlayer'
 }
 
+const isProd = process.env.NODE_ENV === 'production'
+const cdnDomian = 'http://pmmcta3tr.bkt.clouddn.com'
+
 module.exports = {
+  publicPath: isProd ? cdnDomian : '/',
   chainWebpack: config => {
     config.resolve.alias
       .set('common', resolve('src/common'))
