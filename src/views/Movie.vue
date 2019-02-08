@@ -174,6 +174,8 @@ export default {
   background #fff
   .player-wrapper
     height 210px
+    .player
+      height 210px
     .icon-left
       position absolute
       top 15px
