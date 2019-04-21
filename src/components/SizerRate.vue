@@ -69,7 +69,7 @@ export default {
         const dot = document.createElement('div')
         dot.className = 'bar-dot'
         const left = i * 0.1 * this.width
-        console.log(parseInt(left) - 7)
+        // console.log(parseInt(left) - 7)
         this.dots.push(parseInt(left) - 7)
         dot.style.left = parseInt(left) + 'px'
         this.$refs.bar.appendChild(dot)
@@ -114,7 +114,7 @@ export default {
       e.target.style.transform = 'scale(1.0)'
     },
     confirm () {
-      console.log(this.cacheRate)
+      // console.log(this.cacheRate)
       this.$emit('change', this.cacheRate)
     }
   }

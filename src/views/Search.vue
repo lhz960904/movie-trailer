@@ -49,17 +49,11 @@
 
 <script>
 import SearchBox from 'components/SearchBox'
-import ScrollView from 'components/ScrollView'
-import Confirm from 'components/Confirm'
-import Card from 'components/Card'
 import { mapState, mapMutations } from 'vuex'
 
 export default {
   components: {
-    SearchBox,
-    ScrollView,
-    Confirm,
-    Card
+    SearchBox
   },
   data () {
     return {

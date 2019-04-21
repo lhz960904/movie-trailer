@@ -93,19 +93,9 @@
 </template>
 
 <script>
-import 'dplayer/dist/DPlayer.min.css'
-import DPlayer from 'dplayer'
-import ScrollView from 'components/ScrollView'
-import Spacing from 'components/Spacing'
-import Loading from 'components/Loading'
 
 export default {
   name: 'Movie',
-  components: {
-    ScrollView,
-    Spacing,
-    Loading
-  },
   data () {
     return {
       movie: {},
@@ -149,6 +139,7 @@ export default {
       this.$router.replace(`/movie/${id}`)
     },
     initPlayer () {
+      const { DPlayer } = window
       this.player = new DPlayer({
         container: this.$refs.player,
         video: {
@@ -174,6 +165,8 @@ export default {
   background #fff
   .player-wrapper
     height 210px
+    .player
+      height 210px
     .icon-left
       position absolute
       top 15px

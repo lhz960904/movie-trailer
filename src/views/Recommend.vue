@@ -19,15 +19,11 @@
 </template>
 
 <script>
-import ScrollView from 'components/ScrollView'
 import ListBLock from 'components/ListBlock'
-import Spacing from 'components/Spacing'
 
 export default {
   components: {
-    ListBLock,
-    Spacing,
-    ScrollView
+    ListBLock
   },
   data () {
     return {

@@ -19,6 +19,7 @@
         </div>
         <p class="title">{{ item.title }}</p>
       </div>
+      <div v-for="idx in (8 - movies.length)" :key="idx" class="item placeholder"/>
     </div>
     <div v-else class="loading-wrap">
       <Loading/>
@@ -27,12 +28,10 @@
 </template>
 
 <script>
-import Loading from 'components/Loading'
+
 export default {
   name: 'ListBlock',
-  components: {
-    Loading
-  },
+
   filters: {
     toFixed (num) {
       return num.toFixed(1)

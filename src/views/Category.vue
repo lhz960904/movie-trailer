@@ -58,15 +58,9 @@
 import SizerCategory from 'components/SizerCategory'
 import SizerType from 'components/SizerType'
 import SizerRate from 'components/SizerRate'
-import Card from 'components/Card'
-import ScrollView from 'components/ScrollView'
-import Loading from 'components/Loading'
 
 export default {
   components: {
-    Card,
-    Loading,
-    ScrollView,
     SizerType,
     SizerRate,
     SizerCategory

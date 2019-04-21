@@ -60,12 +60,10 @@
 
 <script>
 import TheBackHeader from 'components/TheBackHeader'
-import Confirm from 'components/Confirm'
 
 export default {
   components: {
-    TheBackHeader,
-    Confirm
+    TheBackHeader
   },
   data () {
     return {
