@@ -3,7 +3,9 @@
 ![](https://travis-ci.org/lhz960904/movie-trailer.svg?branch=master)
 
 
-> Vue全家桶开发的电影预告片webAPP，可以查看正在热映与即将上映的电影信息和短片。后台接口[链接](https://github.com/lhz960904/movie-api)，数据爬虫[链接](https://github.com/lhz960904/movie-crawler)
+> Vue全家桶开发的电影预告片webAPP，可以查看正在热映与即将上映的电影信息和短片。
+
+**相关项目：**后台API支持[movie-api](https://github.com/lhz960904/movie-api)，电影数据爬虫[movie-crawler](https://github.com/lhz960904/movie-crawler)
 
 ### 扫码体验
 
