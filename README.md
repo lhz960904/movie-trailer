@@ -11,7 +11,9 @@
 
 ### 效果截图
 
-![效果图](./images/effect.gif)
+![效果图](./images/effect1.gif)
+
+![效果图](./images/effect2.gif)
 
 
 
