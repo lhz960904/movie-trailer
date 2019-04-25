@@ -11,17 +11,8 @@
 
 ### 效果截图
 
-**首页推荐+分类页面**
+![效果图](./images/effect.gif)
 
-![](./images/recommend.gif) ![](./images/category.gif) 
-
-**榜单页面+搜索页面**
-
-![](./images/rank.gif) ![](./images/search.gif)
-
-**个人主页+详情页**
-
-![](./images/user.gif) ![](./images/movie.gif)
 
 
 
