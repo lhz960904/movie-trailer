@@ -1,77 +1,49 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import store from '@/store'
-const Recommend = () => import('views/Recommend')
-const Category = () => import('views/Category')
-const Rank = () => import('views/Rank')
-const Search = () => import('views/Search')
-const User = () => import('views/User')
-const Movie = () => import('views/Movie')
-const Login = () => import('views/Login')
-const List = () => import('views/List')
-const ErrorPage = () => import('views/Error')
+import { createRouter, createWebHistory } from "vue-router";
 
-Vue.use(Router)
+const routes = [
+  {
+    path: "/",
+    redirect: "/recommend"
+  },
+  {
+    path: "/recommend",
+    name: "Recommend",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/Recommend.vue")
+  },
+  {
+    path: "/category",
+    name: "Category",
+    component: () =>
+      import(/* webpackChunkName: "category" */ "../views/Category.vue")
+  },
+  {
+    path: "/rank",
+    name: "Rank",
+    component: () => import(/* webpackChunkName: "rank" */ "../views/Rank.vue")
+  },
+  {
+    path: "/search",
+    name: "Search",
+    component: () =>
+      import(/* webpackChunkName: "search" */ "../views/Search.vue")
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: () =>
+      import(/* webpackChunkName: "login" */ "../views/Login.vue")
+  },
+  {
+    path: "/user",
+    name: "User",
+    component: () => import(/* webpackChunkName: "user" */ "../views/User.vue")
+  }
+];
 
-export default new Router({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes: [
-    {
-      path: '/',
-      redirect: '/recommend'
-    },
-    {
-      path: '/recommend',
-      name: 'recommend',
-      component: Recommend
-    },
-    {
-      path: '/category',
-      name: 'category',
-      component: Category
-    },
-    {
-      path: '/rank',
-      name: 'rank',
-      component: Rank
-    },
-    {
-      path: '/search',
-      name: 'search',
-      component: Search
-    },
-    {
-      path: '/user',
-      name: 'user',
-      component: User,
-      beforeEnter: (to, from, next) => {
-        if (!store.state.user) {
-          next('/login')
-          return
-        }
-        next()
-      }
-    },
-    {
-      path: '/movie/:id',
-      name: 'movie',
-      component: Movie
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: Login
-    },
-    {
-      path: '/list/:type',
-      name: 'list',
-      component: List
-    },
-    {
-      path: '/error',
-      name: 'error',
-      component: ErrorPage
-    }
-  ]
-})
+const router = createRouter({
+  history: createWebHistory(process.env.BASE_URL),
+  routes
+});
+
+export default router;

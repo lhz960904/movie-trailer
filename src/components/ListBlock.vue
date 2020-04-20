@@ -1,42 +1,41 @@
 <template>
   <section class="list-block">
-    <div class="info" @click="$emit('more')">
+    <div class="info">
       <h1 class="title">{{ title }}</h1>
-      <i class="iconfont icon-right"/>
+      <i class="iconfont icon-right" @click="goMore()" />
     </div>
-    <div v-if="movies.length" class="list">
+    <div v-if="movies.length && !loading" class="list">
       <div
         v-for="item in movies"
         :key="item._id"
         class="item"
-        @click="$emit('select', item._id)"
+        @click="selectItem(item._id)"
       >
         <div class="image">
-          <img v-lazy="item.poster" width="100%" height="100%">
+          <img :src="item.poster" />
           <em v-if="item.isPlay === 1" class="rate">
-            {{ item.rate | toFixed }}
+            {{ toFixed(item.rate) }}
           </em>
         </div>
         <p class="title">{{ item.title }}</p>
       </div>
-      <div v-for="idx in (8 - movies.length)" :key="idx" class="item placeholder"/>
+      <div
+        v-for="idx in 8 - movies.length"
+        :key="idx"
+        class="item placeholder"
+      />
     </div>
-    <div v-else class="loading-wrap">
-      <Loading/>
+    <div v-if="loading" class="loading-wrap">
+      <Loading />
     </div>
   </section>
 </template>
 
 <script>
+import { useRouter } from "vue-router";
 
 export default {
-  name: 'ListBlock',
-
-  filters: {
-    toFixed (num) {
-      return num.toFixed(1)
-    }
-  },
+  name: "ListBlock",
   props: {
     movies: {
       type: Array,
@@ -45,9 +44,37 @@ export default {
     title: {
       type: String,
       required: true
+    },
+    loading: {
+      type: Boolean,
+      default: false
+    },
+    type: {
+      type: Number,
+      default: 0
     }
+  },
+  setup(props) {
+    const router = useRouter();
+
+    /* filters */
+    const toFixed = num => {
+      return num.toFixed(1);
+    };
+
+    /* 点击查看更多 */
+    const goMore = () => {
+      router.push(`/list/${props.type}`);
+    };
+
+    /* 点击查看详情 */
+    const selectItem = id => {
+      router.push(`/movie/${id}`);
+    };
+
+    return { toFixed, selectItem, goMore };
   }
-}
+};
 </script>
 
 <style lang="stylus" scoped>
@@ -72,6 +99,9 @@ export default {
       .image
         position relative
         height: 80%;
+        img
+          width: 100%;
+          height: 100%;
         .rate
           position absolute
           right 5px

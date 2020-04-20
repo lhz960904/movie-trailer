@@ -1,28 +1,31 @@
-import axios from 'axios'
-import router from '@/router'
-import Cookie from 'js-cookie'
+import axios from "axios";
+import router from "@/router";
+
+// 请求出错跳转error页面
+const redirectError = () => {
+  router.push("/error");
+};
 
 const instance = axios.create({
   timeout: 60000,
-  baseURL: '/'
-})
-const COOKIE_NAME = 'movie_trailer_user'
+  baseURL: "/"
+});
+
+instance.interceptors.request.use(config => {
+  return config;
+}, redirectError);
 
 instance.interceptors.response.use(res => {
-  const { data } = res
+  const { data } = res;
+  if (data.code === 1001) {
+    return Promise.resolve(data.result);
+  }
   // 登录失效
   if (data.code === 1003) {
-    Cookie.remove(COOKIE_NAME)
-    router.replace('/login')
-    return
+    router.replace("/login");
+    return;
   }
-  return Promise.resolve(data)
-}, () => {
-  router.push('/error')
-})
+  redirectError();
+}, redirectError);
 
-export default {
-  install: (Vue, option) => {
-    Object.defineProperty(Vue.prototype, '$axios', { value: instance })
-  }
-}
+export default instance;

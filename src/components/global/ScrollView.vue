@@ -1,14 +1,17 @@
 <template>
   <div ref="wrapper" class="scroll-wrapper">
     <div>
-      <slot/>
+      <slot />
     </div>
   </div>
 </template>
 
 <script>
-import BScroll from 'better-scroll'
+import BScroll from "better-scroll";
+import { ref, watch, onMounted, onActivated } from "vue";
+
 export default {
+  name: "ScrollView",
   props: {
     data: {
       type: Array,
@@ -19,57 +22,66 @@ export default {
       default: false
     }
   },
-  watch: {
-    data () {
-      setTimeout(() => {
-        this.forceUpdate()
-      }, 20)
-    }
-  },
-  mounted () {
-    setTimeout(() => {
-      this.initScroll()
-    }, 20)
-  },
-  activated () {
-    if (this.data.length) {
-      this.refresh()
-    }
-  },
-  methods: {
-    initScroll () {
-      if (!this.$refs.wrapper) {
-        return
+  setup(props, { emit }) {
+    const wrapper = ref(null);
+    const scroll = ref(null);
+
+    /* 初始化滚动 */
+    const initScroll = () => {
+      if (!wrapper.value) {
+        return;
       }
-      this.scroll = new BScroll(this.$refs.wrapper, {
+      scroll.value = new BScroll(wrapper.value, {
         bounce: false,
         click: true,
-        pullUpLoad: this.pullUpLoad
-      })
-      if (this.pullUpLoad) {
-        this.initPullUpLoad()
+        pullUpLoad: props.pullUpLoad
+      });
+      if (props.pullUpLoad) {
+        scroll.value.on("pullingUp", () => {
+          emit("pulling-up");
+        });
       }
-    },
-    initPullUpLoad () {
-      this.scroll.on('pullingUp', () => {
-        this.$emit('pulling-up')
-      })
-    },
-    refresh () {
-      this.scroll && this.scroll.refresh()
-    },
-    forceUpdate () {
-      if (this.pullUpLoad) {
-        this.scroll.finishPullUp()
-        this.refresh()
+    };
+
+    /* 刷新滚动 */
+    const refresh = () => {
+      scroll.value && scroll.value.refresh();
+    };
+
+    /* 强制刷新，停止滚动 */
+    const forceUpdate = () => {
+      if (props.pullUpLoad) {
+        scroll.value.finishPullUp();
+        refresh();
       }
-    }
+    };
+
+    /* 初始化 */
+    onMounted(() => {
+      setTimeout(() => {
+        initScroll();
+      }, 20);
+    });
+
+    /* keepAlive里内容变化时 */
+    onActivated(() => {
+      if (props.data.length) {
+        refresh();
+      }
+    });
+
+    /* 数据源改变，强制刷新 */
+    watch(props.data, () => {
+      forceUpdate();
+    });
+
+    return { wrapper };
   }
-}
+};
 </script>
 
 <style lang="stylus" scoped>
 .scroll-wrapper
-  height 100%
-  overflow hidden
+  height: 100%;
+  overflow: hidden;
 </style>

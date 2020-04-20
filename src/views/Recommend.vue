@@ -1,69 +1,64 @@
 <template>
   <div class="recommend">
     <ScrollView :data="movies">
-      <ListBLock
-        :movies="playingMovies"
-        :title="`正在热映(${playingCount})`"
-        @more="goMore(1)"
-        @select="selectItem"
+      <ListBlock
+        :movies="data.playingMovies"
+        :title="`正在热映(${data.playingCount})`"
+        :type="0"
+        :loading="data.loading"
       />
-      <Spacing bg-color="#f6f6f6" :height="10"/>
-      <ListBLock
-        :movies="commingMovies"
-        :title="`即将上映(${commingCount})`"
-        @more="goMore(0)"
-        @select="selectItem"
+      <ListBlock
+        :movies="data.commingMovies"
+        :title="`即将上映(${data.commingCount})`"
+        :type="1"
+        :loading="data.loading"
       />
     </ScrollView>
   </div>
 </template>
 
 <script>
-import ListBLock from 'components/ListBlock'
+import axios from "@/common/js/axios";
+import { reactive, computed, onMounted } from "vue";
+import ListBlock from "@/components/ListBlock";
 
 export default {
+  name: "Recommend",
   components: {
-    ListBLock
+    ListBlock
   },
-  data () {
-    return {
+  setup() {
+    /* 响应式数据 */
+    const data = reactive({
       commingMovies: [],
       commingCount: 0,
       playingMovies: [],
-      playingCount: 0
-    }
-  },
-  computed: {
-    movies () {
-      return this.commingMovies.concat(this.playingMovies)
-    }
-  },
-  created () {
-    this.getMovie()
-  },
-  methods: {
-    getMovie () {
-      this.$axios.get('/api/movie/get_hot').then(res => {
-        if (res.code === 1001) {
-          const { comming, playing } = res.result
-          this.commingMovies = comming.movies
-          this.commingCount = comming.count
-          this.playingMovies = playing.movies
-          this.playingCount = playing.count
-        }
-      })
-    },
-    goMore (type) {
-      this.$router.push(`/list/${type}`)
-    },
-    selectItem (id) {
-      this.$router.push(`/movie/${id}`)
-    }
+      playingCount: 0,
+      loading: true
+    });
+
+    /* 请求电影推荐电影列表 */
+    onMounted(async () => {
+      data.loading = true;
+      const { comming, playing } = await axios.get("/api/movie/get_hot");
+      data.commingMovies = comming.movies;
+      data.commingCount = comming.count;
+      data.playingMovies = playing.movies;
+      data.playingCount = playing.count;
+      data.loading = false;
+    });
+
+    /* 推荐电影总列表 */
+    const movies = computed(() => {
+      return data.commingMovies.concat(data.playingMovies);
+    });
+
+    return { data, movies };
   }
-}
+};
 </script>
 
 <style lang="stylus" scoped>
 .recommend
-  height 100%
+  height: 100%;
 </style>
