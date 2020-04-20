@@ -12,7 +12,7 @@
         @click="selectItem(item._id)"
       >
         <div class="image">
-          <img :src="item.poster" />
+          <img v-lazy="item.poster" />
           <em v-if="item.isPlay === 1" class="rate">
             {{ toFixed(item.rate) }}
           </em>
