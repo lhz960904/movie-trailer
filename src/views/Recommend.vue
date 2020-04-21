@@ -2,24 +2,26 @@
   <div class="recommend">
     <ScrollView :data="movies">
       <ListBlock
-        :movies="data.playingMovies"
-        :title="`正在热映(${data.playingCount})`"
+        :movies="state.playingMovies"
+        :title="`正在热映(${state.playingCount})`"
         :type="0"
-        :loading="data.loading"
+        :loading="loading"
       />
+      <Spacing bg-color="#f6f6f6" :height="10" />
       <ListBlock
-        :movies="data.commingMovies"
-        :title="`即将上映(${data.commingCount})`"
+        :movies="state.commingMovies"
+        :title="`即将上映(${state.commingCount})`"
         :type="1"
-        :loading="data.loading"
+        :loading="loading"
       />
     </ScrollView>
+    {{ state.loading }}
   </div>
 </template>
 
 <script>
-import axios from "@/common/js/axios";
-import { reactive, computed, onMounted } from "vue";
+import { useAxios } from "@/common/js/axios";
+import { reactive, computed } from "vue";
 import ListBlock from "@/components/ListBlock";
 
 export default {
@@ -29,31 +31,27 @@ export default {
   },
   setup() {
     /* 响应式数据 */
-    const data = reactive({
+    const state = reactive({
       commingMovies: [],
       commingCount: 0,
       playingMovies: [],
-      playingCount: 0,
-      loading: true
+      playingCount: 0
     });
 
-    /* 请求电影推荐电影列表 */
-    onMounted(async () => {
-      data.loading = true;
-      const { comming, playing } = await axios.get("/api/movie/get_hot");
-      data.commingMovies = comming.movies;
-      data.commingCount = comming.count;
-      data.playingMovies = playing.movies;
-      data.playingCount = playing.count;
-      data.loading = false;
+    const { loading } = useAxios("/api/movie/get_hot", result => {
+      const { comming, playing } = result;
+      state.commingMovies = comming.movies;
+      state.commingCount = comming.count;
+      state.playingMovies = playing.movies;
+      state.playingCount = playing.count;
     });
 
     /* 推荐电影总列表 */
     const movies = computed(() => {
-      return data.commingMovies.concat(data.playingMovies);
+      return state.commingMovies.concat(state.playingMovies);
     });
 
-    return { data, movies };
+    return { state, movies, loading };
   }
 };
 </script>

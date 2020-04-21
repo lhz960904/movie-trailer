@@ -25,6 +25,9 @@
         class="item placeholder"
       />
     </div>
+    <div v-if="!movies.length && !loading">
+      <img src="~common/images/noresult.png" width="100" height="100" />
+    </div>
     <div v-if="loading" class="loading-wrap">
       <Loading />
     </div>
@@ -79,44 +82,44 @@ export default {
 
 <style lang="stylus" scoped>
 .list-block
-  padding 15px
-  min-height 100px
-  text-align center
+  padding: 15px;
+  min-height: 200px;
+  text-align: center;
   .info
-    display flex
-    justify-content space-between
-    margin-bottom 15px
-    font-weight bold
-    font-size 20px
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    font-weight: bold;
+    font-size: 20px;
     .iconfont
-      font-size 20px
+      font-size: 20px;
   .list
-    display flex
-    justify-content space-between
-    flex-wrap wrap
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
     .item
-      width 24%
+      width: 24%;
       .image
-        position relative
+        position: relative;
         height: 80%;
         img
           width: 100%;
           height: 100%;
         .rate
-          position absolute
-          right 5px
-          bottom 2px
-          color #ffb400
-          font-weight bold
-          font-style italic
+          position: absolute;
+          right: 5px;
+          bottom: 2px;
+          color: #ffb400;
+          font-weight: bold;
+          font-style: italic;
       .title
-        padding: 10px 0
-        white-space nowrap
-        overflow hidden
-        text-overflow ellipsis
-        font-size 14px
+        padding: 10px 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 14px;
   .loading-wrap
-    display flex
-    align-items center
-    height 200px
+    display: flex;
+    align-items: center;
+    height: 200px;
 </style>
