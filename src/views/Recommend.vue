@@ -1,6 +1,6 @@
 <template>
   <div class="recommend">
-    <ScrollView :data="movies">
+    <ScrollView :data="state.movies">
       <ListBlock
         :movies="state.playingMovies"
         :title="`正在热映(${state.playingCount})`"
@@ -35,7 +35,10 @@ export default {
       commingMovies: [],
       commingCount: 0,
       playingMovies: [],
-      playingCount: 0
+      playingCount: 0,
+      movies: computed(() => {
+        return state.commingMovies.concat(state.playingMovies);
+      })
     });
 
     const { loading } = useAxios("/api/movie/get_hot", result => {
@@ -46,12 +49,7 @@ export default {
       state.playingCount = playing.count;
     });
 
-    /* 推荐电影总列表 */
-    const movies = computed(() => {
-      return state.commingMovies.concat(state.playingMovies);
-    });
-
-    return { state, movies, loading };
+    return { state, loading };
   }
 };
 </script>

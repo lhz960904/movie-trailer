@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import store from "@/store";
 
 const routes = [
   {
@@ -37,7 +38,14 @@ const routes = [
   {
     path: "/user",
     name: "User",
-    component: () => import(/* webpackChunkName: "user" */ "../views/User.vue")
+    component: () => import(/* webpackChunkName: "user" */ "../views/User.vue"),
+    beforeEnter: (to, from, next) => {
+      if (!store.state.user.username) {
+        next("/login");
+        return;
+      }
+      next();
+    }
   },
   {
     path: "/list/:type",

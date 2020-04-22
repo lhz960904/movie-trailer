@@ -41,7 +41,7 @@
 
 <script>
 import TheBackHeader from "components//TheBackHeader";
-import { reactive, computed, onMounted, watch } from "vue";
+import { reactive, computed, onMounted, watch, toRef } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import axios from "@/common/js/axios";
 
@@ -71,15 +71,14 @@ export default {
       getMovieList();
     });
 
-    watch(
-      () => state.activeIdx,
-      () => {
-        state.page = 1;
-        state.movieList = [];
-        state.count = 0;
-        getMovieList();
-      }
-    );
+    const activeIdx = toRef(state, "activeIdx");
+
+    watch(activeIdx, () => {
+      state.page = 1;
+      state.movieList = [];
+      state.count = 0;
+      getMovieList();
+    });
 
     const getMovieList = async () => {
       const params = {

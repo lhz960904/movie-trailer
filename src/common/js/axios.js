@@ -19,15 +19,15 @@ instance.interceptors.request.use(config => {
 
 instance.interceptors.response.use(res => {
   const { data } = res;
-  if (data.code === 1001) {
-    return Promise.resolve(data.result);
-  }
   // 登录失效
   if (data.code === 1003) {
     router.replace("/login");
     return;
   }
-  redirectError();
+  if (data.code === 1001) {
+    return Promise.resolve(data.result);
+  }
+  return Promise.resolve(data);
 }, redirectError);
 
 export default instance;

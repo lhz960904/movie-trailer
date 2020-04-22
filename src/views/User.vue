@@ -34,7 +34,7 @@
 
 <script>
 import { useStore } from "vuex";
-import { onMounted, computed } from "vue";
+import { computed } from "vue";
 import { useRouter } from "vue-router";
 import axios from "@/common/js/axios";
 
@@ -46,14 +46,9 @@ export default {
 
     const user = computed(() => store.state.user);
 
-    onMounted(async () => {
-      // const user = await axios.get("/api/user/get_user_info");
-      // store.dispatch("setUserInfo", user);
-    });
-
     const logout = async () => {
       await axios.post("/api/user/logout");
-      store.dispatch("setUserInfo", null);
+      store.dispatch("setUserInfo", {});
       router.replace("/");
     };
 

@@ -2,10 +2,7 @@ import Vuex from "vuex";
 
 export default Vuex.createStore({
   state: {
-    user: {
-      email: "lihaozecq@gmail.com",
-      username: "超强"
-    }
+    user: {}
   },
   mutations: {
     setUserInfo(state, info) {
