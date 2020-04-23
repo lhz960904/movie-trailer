@@ -140,6 +140,6 @@ export default {
       outline: none;
 .fade-enter-active, .fade-leave-active
   transition: all .5s;
-.fade-enter, .fade-leave-to
+.fade-enter-from, .fade-leave-to
   transform: translateX(100%);
 </style>

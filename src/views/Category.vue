@@ -38,7 +38,7 @@
       <div v-show="activeTabIdx !== -1" class="mask" @click="closeTab" />
     </div>
     <div v-show="!loading" class="movie-wrapper">
-      <ScrollView :data="movies">
+      <ScrollView v-show="movies.length" :data="movies">
         <Card
           v-for="movie in movies"
           :key="movie._id"
@@ -46,10 +46,7 @@
           @select="selectItem"
         />
       </ScrollView>
-      <div v-show="!movies.length" class="no-result">
-        <img src="~common/images/noresult.png" class="img" />
-        <p class="text">没有找到相关内容</p>
-      </div>
+      <NoResult v-show="!movies.length" />
     </div>
     <div v-show="loading" class="loading-wrap">
       <Loading />
@@ -158,65 +155,65 @@ export default {
 
 <style lang="stylus" scoped>
 .nav-wrapper
-  position fixed
-  width 100%
-  z-index 10
-  background #fff
+  position: fixed;
+  width: 100%;
+  z-index: 10;
+  background: $white;
   .tabs
-    display flex
-    height 40px
-    line-height 40px
-    border-bottom 1px solid #eee
+    display: flex;
+    height: 40px;
+    line-height: 40px;
+    border-bottom: 1px solid #eee;
     .item
-      position relative
-      flex 1
-      text-align center
-      font-size 13px
-      color #777
+      position: relative;
+      flex: 1;
+      text-align: center;
+      font-size: 13px;
+      color: #777;
       &.active
-        color $theme-color
+        color: $theme-color
       &.disable
-        color #eee
+        color: #eee
       &+.item:before
-        position absolute
-        content ""
-        display block
-        height 20px
-        top 10px
-        left 0
-        border-left 1px solid #e8e8e8
+        position: absolute
+        content: "";
+        display: block;
+        height: 20px;
+        top: 10px;
+        left: 0;
+        border-left: 1px solid #e8e8e8;
       .icon
-        font-size 12px
+        font-size: 12px;
   .tab-content
-      position absolute
-      width 100%
-      min-height 50px
-      background #fff
-      z-index 10
+      position: absolute;
+      width: 100%;
+      min-height: 50px;
+      background: #fff;
+      z-index: 10;
   .mask
-    position fixed
-    top 96px
-    bottom 0
-    width 100%
-    background rgba(0, 0, 0, .3)
+    position: fixed;
+    top: 96px;
+    bottom: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, .3);
 .movie-wrapper, .loading-wrap
-  position fixed
-  top 96px
-  bottom 0
-  width 100%
+  position: fixed;
+  top: 96px;
+  bottom: 0;
+  width: 100%;
   .no-result
-    position absolute
-    top 40%
-    left 50%
-    transform translate(-50%,-50%)
-    color #999
-    text-align center
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    color: #999;
+    text-align: center;
     .img
-      width 100px
-      height 100px
-      filter grayscale(1)
-      margin-bottom 15px
+      width: 100px;
+      height: 100px;
+      filter: grayscale(1);
+      margin-bottom: 15px;
 .loading-wrap
-  display flex
-  align-items center
+  display: flex;
+  align-items: center;
 </style>

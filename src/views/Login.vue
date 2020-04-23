@@ -259,6 +259,6 @@ input:-webkit-autofill
     transform: translate3d(10px, 0, 0);
 .fade-enter-active, .fade-leave-active
   transition: all .5s;
-.fade-enter, .fade-leave-to
+.fade-enter-from, .fade-leave-to
   transform :translateX(100%);
 </style>

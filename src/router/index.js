@@ -30,6 +30,18 @@ const routes = [
       import(/* webpackChunkName: "search" */ "../views/Search.vue")
   },
   {
+    path: "/error",
+    name: "Error",
+    component: () =>
+      import(/* webpackChunkName: "error" */ "../views/Error.vue")
+  },
+  {
+    path: "/movie/:id",
+    name: "Movie",
+    component: () =>
+      import(/* webpackChunkName: "movie" */ "../views/Movie.vue")
+  },
+  {
     path: "/login",
     name: "Login",
     component: () =>
