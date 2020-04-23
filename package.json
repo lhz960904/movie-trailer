@@ -8,9 +8,9 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "better-scroll": "^1.13.2",
-    "dplayer": "^1.25.0",
+    "dplayer": "^1.25.1",
     "good-storage": "^1.1.0",
     "js-cookie": "^2.2.0",
     "vue": "^2.6.3",
@@ -21,7 +21,7 @@
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.1",
     "@vue/cli-plugin-eslint": "^3.0.1",
-    "@vue/cli-service": "^3.6.0",
+    "@vue/cli-service": "^4.3.1",
     "@vue/eslint-config-standard": "^4.0.0",
     "babel-eslint": "^10.0.1",
     "eslint": "^5.8.0",

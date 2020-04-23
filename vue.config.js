@@ -47,6 +47,7 @@ module.exports = {
         return args
       })
   },
+  outputDir: 'docs',
   css: {
     loaderOptions: {
       stylus: {
