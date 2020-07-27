@@ -1,6 +1,6 @@
 <template>
   <TheHeader />
-  <div class="content">
+  <div class="layout-content">
     <RouterView />
   </div>
 </template>
@@ -16,3 +16,13 @@ export default defineComponent({
   }
 });
 </script>
+
+<style lang="stylus">
+#app
+  height: 100vh;
+  .layout-content
+    position: absolute;
+    top: $headerHeight;
+    bottom: 0;
+    width: 100%;
+</style>
