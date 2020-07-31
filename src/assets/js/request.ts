@@ -1,50 +1,78 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-import { App, reactive, toRefs } from "vue";
+import axios, { AxiosResponse, AxiosRequestConfig, Method } from "axios";
+import { reactive, toRefs, onMounted } from "vue";
 
 export const requestKey = Symbol("_axios_");
 
-interface Response {
+interface RequestResponse<T> {
   code: number;
-  data: unknown;
+  data: T;
+  errMsg: string;
 }
 
-interface RequestState {
+interface RequestState<T> {
   loading: boolean;
   error: boolean;
-  data: unknown;
+  data: T;
 }
 
-export default {
-  install: (app: App) => {
-    app.provide(requestKey, () => console.log("hah"));
-  }
-};
+interface RequestParams {
+  [propName: string]: unknown;
+}
 
-export function useRequest(url: string, config?: AxiosRequestConfig) {
-  const state: RequestState = reactive({
-    loading: true,
+interface RequestConfig<T> extends AxiosRequestConfig {
+  initialData: T;
+  immediate?: boolean;
+}
+
+// todo有待完善
+export function useRequest<T>(
+  url: string,
+  params?: RequestParams,
+  config?: RequestConfig<T>
+) {
+  const state: RequestState<T> = reactive({
+    loading: false,
     error: false,
-    data: null
+    data: config?.initialData
+  }) as RequestState<T>;
+
+  // 请求函数
+  const fetchFunc = () => {
+    state.loading = true;
+
+    const matched = url.match(/:(\S+)/);
+    const method: Method = matched ? (matched[1] as Method) : "get"; //
+
+    const isGetMethod = method.toLowerCase() === "get";
+
+    delete config?.initialData;
+
+    return axios({
+      url,
+      method,
+      params: isGetMethod ? params : undefined,
+      data: isGetMethod ? undefined : params,
+      ...config
+    })
+      .then((response: AxiosResponse<RequestResponse<T>>) => {
+        const result = response.data;
+        if (result.code === 200) {
+          state.data = result.data;
+        }
+      })
+      .catch(() => {
+        state.error = true;
+      })
+      .finally(() => {
+        state.loading = false;
+      });
+  };
+
+  onMounted(() => {
+    if (config?.immediate) {
+      fetchFunc();
+    }
   });
 
-  axios({
-    url,
-    ...config,
-    timeout: 60000,
-    baseURL: "/"
-  })
-    .then((res: AxiosResponse<Response>) => {
-      const { data } = res;
-      if (data.code === 200) {
-        state.data = data.data;
-      }
-    })
-    .catch(() => {
-      state.error = true;
-    })
-    .finally(() => {
-      state.loading = false;
-    });
-
-  return toRefs(state);
+  return { ...toRefs(state), fetch: fetchFunc };
 }
