@@ -1,14 +1,27 @@
 <template>
   <div class="recommend">
-    <div>recommend {{ loading }}</div>
-    {{ data.comming.count }}
-    <button @click="getList">改变</button>
+    <Scroll :data="movies">
+      <ListBlock
+        :movies="data.playing.movies"
+        :title="`正在热映(${data.playing.count})`"
+        :type="0"
+        :loading="loading"
+      />
+      <Spacing />
+      <ListBlock
+        :movies="data.comming.movies"
+        :title="`即将上映(${data.comming.count})`"
+        :type="1"
+        :loading="loading"
+      />
+    </Scroll>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, computed } from "vue";
 import { useRequest } from "@/assets/js/request";
+import ListBlock from "@/components/ListBlock.vue";
 import { Movie } from "@/types/movie";
 
 interface Item {
@@ -22,6 +35,9 @@ interface RecommendData {
 }
 
 export default defineComponent({
+  components: {
+    ListBlock
+  },
   setup() {
     const initialData = {
       comming: { count: 0, movies: [] },
@@ -34,7 +50,12 @@ export default defineComponent({
       { initialData, immediate: true }
     );
 
-    return { data, loading };
+    const movies = computed(() => {
+      const { comming, playing } = data.value;
+      return comming.movies.concat(playing.movies);
+    });
+
+    return { data, loading, movies };
   }
 });
 </script>

@@ -8,3 +8,14 @@ page-fixed(t = 0)
   left: 0;
   background: #fff;
   z-index: 10;
+
+layout-flex(a = center, b = space-between)
+  display: flex;
+  align-items: a;
+  justify-content: b;
+  flex-wrap: wrap;
+
+text-ellipsis()
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;

@@ -25,4 +25,6 @@ export default defineComponent({
     top: $headerHeight;
     bottom: 0;
     width: 100%;
+    > div
+      height: 100%;
 </style>
