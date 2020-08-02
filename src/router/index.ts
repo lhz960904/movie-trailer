@@ -29,6 +29,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/user",
     name: "User",
     component: () => import("../views/User.vue")
+  },
+  {
+    path: "/list/:type",
+    name: "List",
+    component: () => import("../views/List.vue")
   }
 ];
 

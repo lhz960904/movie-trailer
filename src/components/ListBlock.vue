@@ -110,6 +110,6 @@ export default defineComponent({
         text-ellipsis();
         font-size: $font-size-base;
   .loading-wrap
-    layout-flex();
+    layout-flex(center, center);
     height: 200px;
 </style>
