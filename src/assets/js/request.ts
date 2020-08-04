@@ -1,7 +1,5 @@
 import axios, { AxiosResponse, AxiosRequestConfig, Method } from "axios";
-import { reactive, toRefs, onMounted } from "vue";
-
-export const requestKey = Symbol("_axios_");
+import { reactive, toRefs, onMounted, ComputedRef } from "vue";
 
 interface RequestResponse<T> {
   code: number;
@@ -20,20 +18,27 @@ interface RequestParams {
 }
 
 interface RequestConfig<T> extends AxiosRequestConfig {
-  initialData: T;
-  immediate?: boolean;
+  initialData?: T;
+  immediate: boolean;
 }
 
-// todo有待完善
+const defaultConfig = {
+  immediate: true
+};
+
 export function useRequest<T>(
   url: string,
-  params?: RequestParams,
-  config?: RequestConfig<T>
+  params?: ComputedRef<RequestParams>,
+  config?: Partial<RequestConfig<T>>
 ) {
+  const combineConfig: RequestConfig<T> = { ...defaultConfig, ...config };
+
+  const { initialData, immediate, ...axiosConfig } = combineConfig;
+
   const state: RequestState<T> = reactive({
     loading: false,
     error: false,
-    data: config?.initialData
+    data: initialData
   }) as RequestState<T>;
 
   // 请求函数
@@ -45,31 +50,30 @@ export function useRequest<T>(
 
     const isGetMethod = method.toLowerCase() === "get";
 
-    delete config?.initialData;
-
     return axios({
       url,
       method,
-      params: isGetMethod ? params : undefined,
-      data: isGetMethod ? undefined : params,
-      ...config
+      params: isGetMethod ? params?.value : undefined,
+      data: isGetMethod ? undefined : params?.value,
+      ...axiosConfig
     })
       .then((response: AxiosResponse<RequestResponse<T>>) => {
         const result = response.data;
         if (result.code === 200) {
           state.data = result.data;
+          state.loading = false;
+        } else {
+          // messaage.error
         }
       })
       .catch(() => {
         state.error = true;
-      })
-      .finally(() => {
         state.loading = false;
       });
   };
 
   onMounted(() => {
-    if (config?.immediate) {
+    if (immediate) {
       fetchFunc();
     }
   });

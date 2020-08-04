@@ -39,16 +39,14 @@ export default defineComponent({
     ListBlock
   },
   setup() {
-    const initialData = {
+    const initialData: RecommendData = {
       comming: { count: 0, movies: [] },
       playing: { count: 0, movies: [] }
     };
 
-    const { data, loading } = useRequest<RecommendData>(
-      "/api/movie/hot",
-      {},
-      { initialData, immediate: true }
-    );
+    const { data, loading } = useRequest("/api/movie/hot", undefined, {
+      initialData
+    });
 
     const movies = computed(() => {
       const { comming, playing } = data.value;

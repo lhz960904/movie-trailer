@@ -29,6 +29,7 @@ interface CardProps {
 }
 
 export default defineComponent({
+  name: "Card",
   props: ["movie", "sort"],
   setup(props: Readonly<CardProps>, { emit }) {
     return {
