@@ -27,9 +27,7 @@
         </div>
       </Scroll>
     </div>
-    <div v-show="totalLoading && !movieList.length" class="loading-wrap">
-      <Loading />
-    </div>
+    <Loading v-show="totalLoading" height="80%" />
   </div>
 </template>
 
@@ -140,7 +138,4 @@ export default defineComponent({
       text-align: center;
       font-size: $font-size-small;
       color: $color-text-regular;
-  .loading-wrap
-    layout-flex(center, center)
-    height: 80%;
 </style>

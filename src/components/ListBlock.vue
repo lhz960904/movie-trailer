@@ -28,9 +28,7 @@
     <div v-if="!movies.length && !loading">
       <img src="~@/assets/images/noresult.png" width="100" height="100" />
     </div>
-    <div v-if="loading" class="loading-wrap">
-      <Loading />
-    </div>
+    <Loading v-if="loading" height="200px" />
   </section>
 </template>
 
@@ -109,7 +107,4 @@ export default defineComponent({
         padding: 10px 0;
         text-ellipsis();
         font-size: $font-size-base;
-  .loading-wrap
-    layout-flex(center, center);
-    height: 200px;
 </style>

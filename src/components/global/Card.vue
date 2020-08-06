@@ -54,7 +54,7 @@ export default defineComponent({
 
 <style lang="stylus" scoped>
 .card
-  layout-flex();
+  layout-flex(center);
   padding: 10px 20px;
   height: 140px;
   box-sizing: border-box;
