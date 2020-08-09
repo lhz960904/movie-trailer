@@ -60,7 +60,6 @@ export default defineComponent({
   padding: 10px 25px;
   .category-list
     layout-flex();
-    flex-wrap: wrap;
     .item
       padding: 6px 12px;
       margin: 0 7px 10px 0;
