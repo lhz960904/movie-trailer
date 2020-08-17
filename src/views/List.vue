@@ -15,12 +15,7 @@
     </TheBackHeader>
     <div class="content-wrapper" v-show="movieList.length">
       <Scroll :data="movieList" :pull-up-load="true" @pulling-up="loadMore">
-        <Card
-          v-for="movie in movieList"
-          :key="movie.id"
-          :movie="movie"
-          @select="gotoDetail"
-        />
+        <Card v-for="movie in movieList" :key="movie.id" :movie="movie" />
         <div class="pull-up-wrap">
           <p v-show="pullUpLoading">正在加载...</p>
           <p v-show="noMore">没有更多了~</p>
@@ -87,10 +82,6 @@ export default defineComponent({
       router.push(`/list/${idx}`);
     };
 
-    const gotoDetail = (id: string) => {
-      router.push(`/movie/${id}`);
-    };
-
     const onBack = () => {
       router.replace(`/recommend`);
     };
@@ -104,7 +95,6 @@ export default defineComponent({
       tabs,
       loadMore,
       switchTab,
-      gotoDetail,
       onBack
     };
   }

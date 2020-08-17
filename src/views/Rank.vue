@@ -6,7 +6,6 @@
         :key="movie.id"
         :movie="movie"
         :sort="index + 1"
-        @select="gotoDetail"
       />
     </Scroll>
     <Loading v-show="loading" />
@@ -15,25 +14,18 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { useRouter } from "vue-router";
 import { useRequest } from "@/assets/js/request";
 import { Movie } from "@/types/movie";
 
 export default defineComponent({
   setup() {
-    const router = useRouter();
-
     const initialData: Movie[] = [];
 
     const { data, loading } = useRequest("/api/movie/rank", undefined, {
       initialData
     });
 
-    const gotoDetail = (id: string) => {
-      router.push(`/movie/${id}`);
-    };
-
-    return { gotoDetail, movieList: data, loading };
+    return { movieList: data, loading };
   }
 });
 </script>

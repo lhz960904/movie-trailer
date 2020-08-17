@@ -2,39 +2,49 @@
   <div class="search-box">
     <i class="iconfont icon-search" />
     <input
-      v-model="inputVal"
+      :value="inputValue"
       type="text"
       class="search-input"
+      @input="onChange"
       :placeholder="placeholder"
     />
-    <i v-show="inputVal" class="iconfont icon-delete" @click="handleClear" />
+    <i v-show="inputValue" class="iconfont icon-delete" @click="handleClear" />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch } from "vue";
+import { defineComponent, watch, toRef } from "vue";
 
 export default defineComponent({
   props: {
     placeholder: {
       type: String,
       default: "请输入"
+    },
+    value: {
+      type: String
     }
   },
   setup(props, { attrs, emit }) {
-    const inputVal = ref<string>(attrs.modelValue as string);
+    const inputValue = toRef(attrs, "modelValue");
 
-    watch(inputVal, (newVal: string) => {
-      emit("update:modelValue", newVal);
-      emit("change");
+    watch(inputValue, () => {
+      console.log("ha");
     });
 
     const handleClear = () => {
-      inputVal.value = "";
+      emit("update:modelValue", "");
+      emit("change", "");
       emit("clear");
     };
 
-    return { inputVal, handleClear };
+    const onChange = (e: Event) => {
+      const value = (e.target as HTMLInputElement).value;
+      emit("update:modelValue", value);
+      emit("change", value);
+    };
+
+    return { handleClear, attrs, onChange, inputValue };
   }
 });
 </script>

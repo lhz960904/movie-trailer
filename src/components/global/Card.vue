@@ -21,6 +21,7 @@
 
 <script lang="ts">
 import { computed, defineComponent } from "vue";
+import { useRouter } from "vue-router";
 import { Movie, Performer } from "@/types/movie";
 
 interface CardProps {
@@ -32,6 +33,8 @@ export default defineComponent({
   name: "Card",
   props: ["movie", "sort"],
   setup(props: Readonly<CardProps>, { emit }) {
+    const router = useRouter();
+
     return {
       removeZh(str: string) {
         return str.replace("(中国大陆)", "");
@@ -45,6 +48,7 @@ export default defineComponent({
       }),
       onClick() {
         if (!props.movie) return;
+        router.push(`/movie/${props.movie.id}`);
         emit("select", props.movie.id);
       }
     };

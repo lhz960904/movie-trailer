@@ -3,12 +3,7 @@
     <SizerTab :sizerState="state" @change="handleSizerChange" />
     <div v-show="!loading" class="movie-list">
       <Scroll v-show="movieList.length" :data="movieList">
-        <Card
-          v-for="movie in movieList"
-          :key="movie.id"
-          :movie="movie"
-          @select="gotoDetail"
-        />
+        <Card v-for="movie in movieList" :key="movie.id" :movie="movie" />
       </Scroll>
       <NoResult v-show="!movieList.length" />
     </div>
@@ -18,7 +13,6 @@
 
 <script lang="ts">
 import { defineComponent, reactive, computed } from "vue";
-import { useRouter } from "vue-router";
 import { useRequest } from "@/assets/js/request";
 import SizerTab from "@/components/SizerTab.vue";
 import { Movie } from "@/types/movie";
@@ -29,8 +23,6 @@ export default defineComponent({
     SizerTab
   },
   setup() {
-    const router = useRouter();
-
     const state: Required<SizerState> = reactive({
       status: "1",
       rate: [0, 10],
@@ -57,16 +49,11 @@ export default defineComponent({
       fetch();
     };
 
-    const gotoDetail = (id: string) => {
-      router.push(`/movie/${id}`);
-    };
-
     return {
       state,
       movieList: data,
       loading,
       handleSizerChange,
-      gotoDetail,
       fetch
     };
   }
