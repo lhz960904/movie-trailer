@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, watch, toRef } from "vue";
+import { defineComponent, toRef } from "vue";
 
 export default defineComponent({
   props: {
@@ -27,10 +27,6 @@ export default defineComponent({
   },
   setup(props, { attrs, emit }) {
     const inputValue = toRef(attrs, "modelValue");
-
-    watch(inputValue, () => {
-      console.log("ha");
-    });
 
     const handleClear = () => {
       emit("update:modelValue", "");

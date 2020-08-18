@@ -5,7 +5,10 @@
 
 > Vue全家桶开发的电影预告片webAPP，可以查看正在热映与即将上映的电影信息和短片。
 
-**相关项目**: 后台API支持[movie-api](https://github.com/lhz960904/movie-api)，电影数据爬虫[movie-crawler](https://github.com/lhz960904/movie-crawler)
+**相关项目**: 
+  - 后台API支持[movie-api](https://github.com/lhz960904/movie-api) (已升级成Egg)
+
+  - 电影数据爬虫[movie-crawler](https://github.com/lhz960904/movie-crawler) (python爬取，已废弃)
 
 ### 扫码体验
 
@@ -23,7 +26,7 @@
 
 **V3.0.0**
 
-- 使用vue3 + TypeScript进行重构 (进行中...)
+- 使用vue3 + TypeScript进行重构
 
 **V2.0.0**
 
