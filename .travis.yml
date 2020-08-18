@@ -3,6 +3,10 @@ node_js:
   - 12
 branchs:
   - master
+addons:
+  apt:
+    packages:
+    - sshpass
 install:
   "npm install"
 script:
