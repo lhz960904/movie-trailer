@@ -5,3 +5,7 @@ branchs:
   - master
 install:
   "npm install"
+script:
+  - ./script/deploy.sh
+
+
