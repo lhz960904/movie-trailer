@@ -8,3 +8,4 @@ npm run build
 
 # 将dist文件发送到远程
 scp dist/ root@${serverIP}:/home/web/  
+
