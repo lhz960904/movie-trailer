@@ -48,7 +48,7 @@ export default defineComponent({
   .item
     line-height: 40px;
     color: $color-text-primary;
-    border-bottom: 1px solid $border-color-base;
+    border-bottom: $bordered;
     .icon-dui
       width: 40px;
       text-align: center;

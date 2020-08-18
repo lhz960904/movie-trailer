@@ -234,7 +234,7 @@ export default defineComponent({
           flex-direction: row;
           padding: 10px 0;
           line-height: 23px;
-          border-bottom: 1px solid $border-color-base;
+          border-bottom: $bordered;
           .desc
             flex: 1;
             layout-flex(normal, space-between);
@@ -275,7 +275,7 @@ export default defineComponent({
         .descript
           margin: 10px 0;
           font-size: $font-size-small;
-          border-bottom: 1px solid $border-color-base;
+          border-bottom: $bordered;
           .item
             display: flex;
             margin-bottom: 10px;
@@ -287,7 +287,7 @@ export default defineComponent({
           font-size: 0;
           white-space: nowrap;
           overflow-x: scroll;
-          border-bottom: 1px solid $border-color-base;
+          border-bottom: $bordered;
           .cast
             width: 70px;
             margin-bottom: 10px;

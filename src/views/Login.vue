@@ -193,7 +193,7 @@ export default defineComponent({
         display: flex;
         height: 45px;
         line-height: 45px;
-        border-bottom: 1px solid $border-color-base;
+        border-bottom: $bordered;
         .iconfont
           margin: 0 5px 0 15px;
           font-size: $font-size-extra-large;

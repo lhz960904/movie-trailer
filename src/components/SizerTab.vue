@@ -103,7 +103,7 @@ export default defineComponent({
   layout-flex();
   height: 40px;
   line-height: 40px;
-  border-bottom: 1px solid $border-color-base;
+  border-bottom: $bordered;
   .sizer-tab-item
     position: relative;
     flex: 1;

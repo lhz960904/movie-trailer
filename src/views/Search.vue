@@ -146,7 +146,7 @@ export default defineComponent({
       display: flex;
       font-size: $font-size-base;
       color: $color-text-primary;
-      border-bottom: 1px solid $border-color-base;
+      border-bottom: $bordered;
       .icon
         font-size: $font-size-base;
         color: $color-text-secondary;

@@ -55,7 +55,7 @@ export default defineComponent({
   flex-wrap: nowrap;
   padding: 0 10px;
   background: $color-white;
-  border: 1px solid $border-color-base;
+  border: $bordered;
   border-radius: $border-radius-base;
   .iconfont
     font-size: $font-size-medium;

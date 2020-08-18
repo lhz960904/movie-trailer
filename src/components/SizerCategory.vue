@@ -67,7 +67,7 @@ export default defineComponent({
       border-radius: $border-radius-base
       font-size: $font-size-small;
       color: $color-text-regular;
-      border: 1px solid $border-color-base;
+      border: $bordered;
       &.active
         border-color: $color-golden;
         background: $color-golden;

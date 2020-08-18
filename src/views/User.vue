@@ -107,7 +107,7 @@ export default defineComponent({
         font-size: $font-size-medium;
         line-height: 25px;
         list-style: none;
-        border-bottom: 1px solid $border-color-base;
+        border-bottom: $bordered;
         color: $color-primary;
         em
           font-size: $font-size-small;

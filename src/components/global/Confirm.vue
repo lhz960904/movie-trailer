@@ -79,10 +79,10 @@ export default {
           flex: 1;
           line-height: 22px;
           padding: 10px 0;
-          border-top: 1px solid $border-color-base;
+          border-top: $bordered;
           color: #1e7dd7;
           &.left
-            border-right: 1px solid $border-color-base;
+            border-right: $bordered;
 @keyframes confirm-fadein
   0%
     opacity: 0;
