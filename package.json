@@ -10,6 +10,7 @@
   "dependencies": {
     "axios": "^0.19.2",
     "better-scroll": "^2.0.0-beta.10",
+    "dplayer": "^1.26.0",
     "vue": "^3.0.0-rc.5",
     "vue-class-component": "^7.2.3",
     "vue-property-decorator": "^8.4.2",
@@ -19,6 +20,7 @@
   },
   "devDependencies": {
     "@types/better-scroll": "^1.12.2",
+    "@types/dplayer": "^1.25.0",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^2.33.0",
     "@vue/cli-plugin-eslint": "~4.4.0",

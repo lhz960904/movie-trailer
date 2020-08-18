@@ -20,6 +20,7 @@ interface RequestParams {
 interface RequestConfig<T> extends AxiosRequestConfig {
   initialData?: T;
   immediate: boolean;
+  onSuccess?: (data: RequestResponse<T>) => void;
   onFail?: (data: RequestResponse<T>) => void;
 }
 
@@ -35,21 +36,21 @@ const defaultConfig = {
 };
 
 function useRequest<T>(
-  url: string,
+  url: string | ComputedRef<string>,
   config?: Partial<RequestConfig<T>>
 ): ReturnResult<T>;
 function useRequest<T>(
-  url: string,
+  url: string | ComputedRef<string>,
   params?: ComputedRef<RequestParams>,
   config?: Partial<RequestConfig<T>>
 ): ReturnResult<T>;
 function useRequest<T>(...args: any[]): ReturnResult<T> {
-  let _url: string;
+  let _url: { value: string };
   let _params: ComputedRef<RequestParams> | undefined;
   let _config: Partial<RequestConfig<T>> = {};
 
   if (args.length >= 1) {
-    _url = args[0];
+    _url = args[0].value ? args[0] : { value: args[0] };
   }
 
   if (args.length > 2) {
@@ -65,7 +66,13 @@ function useRequest<T>(...args: any[]): ReturnResult<T> {
 
   const combineConfig: RequestConfig<T> = { ...defaultConfig, ..._config };
 
-  const { initialData, immediate, onFail, ...axiosConfig } = combineConfig;
+  const {
+    initialData,
+    immediate,
+    onSuccess,
+    onFail,
+    ...axiosConfig
+  } = combineConfig;
 
   const state: RequestState<T> = reactive({
     loading: false,
@@ -77,13 +84,13 @@ function useRequest<T>(...args: any[]): ReturnResult<T> {
   const fetchFunc = () => {
     state.loading = true;
 
-    const matched = _url.match(/:(\S+)/);
+    const matched = _url.value.match(/:(\S+)/);
     const method: Method = matched ? (matched[1] as Method) : "get"; //
 
     const isGetMethod = method.toLowerCase() === "get";
 
     return axios({
-      url: _url,
+      url: _url.value,
       method,
       params: isGetMethod ? _params?.value : undefined,
       data: isGetMethod ? undefined : _params?.value,
@@ -93,6 +100,9 @@ function useRequest<T>(...args: any[]): ReturnResult<T> {
         const result = response.data;
         if (result.code === 200) {
           state.data = result.data;
+          if (typeof onSuccess === "function") {
+            onSuccess(result);
+          }
         } else {
           if (typeof onFail === "function") {
             onFail(result);
