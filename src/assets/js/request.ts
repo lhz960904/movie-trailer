@@ -1,7 +1,7 @@
 import axios, { AxiosResponse, AxiosRequestConfig, Method } from "axios";
-import { reactive, toRefs, onMounted, ComputedRef } from "vue";
+import { reactive, toRefs, onMounted, ComputedRef, Ref } from "vue";
 
-interface RequestResponse<T> {
+export interface RequestResponse<T> {
   code: number;
   data: T;
   errMsg: string;
@@ -20,20 +20,52 @@ interface RequestParams {
 interface RequestConfig<T> extends AxiosRequestConfig {
   initialData?: T;
   immediate: boolean;
+  onFail?: (data: RequestResponse<T>) => void;
+}
+
+interface ReturnResult<T> {
+  loading: Ref<boolean>;
+  error: Ref<boolean>;
+  data: Ref<T>;
+  fetch: () => Promise<void>;
 }
 
 const defaultConfig = {
   immediate: true
 };
 
-export function useRequest<T>(
+function useRequest<T>(
+  url: string,
+  config?: Partial<RequestConfig<T>>
+): ReturnResult<T>;
+function useRequest<T>(
   url: string,
   params?: ComputedRef<RequestParams>,
   config?: Partial<RequestConfig<T>>
-) {
-  const combineConfig: RequestConfig<T> = { ...defaultConfig, ...config };
+): ReturnResult<T>;
+function useRequest<T>(...args: any[]): ReturnResult<T> {
+  let _url: string;
+  let _params: ComputedRef<RequestParams> | undefined;
+  let _config: Partial<RequestConfig<T>> = {};
 
-  const { initialData, immediate, ...axiosConfig } = combineConfig;
+  if (args.length >= 1) {
+    _url = args[0];
+  }
+
+  if (args.length > 2) {
+    _params = args[1];
+    _config = args[2];
+  } else {
+    if (args[1] && args[1].value) {
+      _params = args[1];
+    } else if (typeof args[1] === "object") {
+      _config = args[1];
+    }
+  }
+
+  const combineConfig: RequestConfig<T> = { ...defaultConfig, ..._config };
+
+  const { initialData, immediate, onFail, ...axiosConfig } = combineConfig;
 
   const state: RequestState<T> = reactive({
     loading: false,
@@ -45,26 +77,29 @@ export function useRequest<T>(
   const fetchFunc = () => {
     state.loading = true;
 
-    const matched = url.match(/:(\S+)/);
+    const matched = _url.match(/:(\S+)/);
     const method: Method = matched ? (matched[1] as Method) : "get"; //
 
     const isGetMethod = method.toLowerCase() === "get";
 
     return axios({
-      url,
+      url: _url,
       method,
-      params: isGetMethod ? params?.value : undefined,
-      data: isGetMethod ? undefined : params?.value,
+      params: isGetMethod ? _params?.value : undefined,
+      data: isGetMethod ? undefined : _params?.value,
       ...axiosConfig
     })
       .then((response: AxiosResponse<RequestResponse<T>>) => {
         const result = response.data;
         if (result.code === 200) {
           state.data = result.data;
-          state.loading = false;
         } else {
+          if (typeof onFail === "function") {
+            onFail(result);
+          }
           // messaage.error
         }
+        state.loading = false;
       })
       .catch(() => {
         state.error = true;
@@ -80,3 +115,19 @@ export function useRequest<T>(
 
   return { ...toRefs(state), fetch: fetchFunc };
 }
+
+export { useRequest };
+
+const instance = axios.create({
+  timeout: 60000,
+  baseURL: "/"
+});
+
+instance.interceptors.response.use(
+  res => res.data,
+  () => {
+    // messaage.error
+  }
+);
+
+export default instance;
