@@ -42,7 +42,6 @@
     v-model="state.isShowConfirm"
     content="是否删除所有搜索历史"
     @confirm="clearSearch"
-    @cancel="state.isShowConfirm = false"
   />
 </template>
 
@@ -68,7 +67,7 @@ export default defineComponent({
     const { data: hotSearchKeys } = useRequest("/api/keyword");
 
     const params = computed(() => ({ keyword: state.keyword }));
-    const { data: movieList, fetch } = useRequest("/api/movie", params, {
+    const { data: movieList, fetch } = useRequest("/api/movie/search", params, {
       immediate: false,
       initialData: []
     });

@@ -37,6 +37,7 @@ export default {
     const showFlag = toRef(attrs, "modelValue");
 
     const cancel = () => {
+      emit("update:modelValue", false);
       emit("cancel");
     };
 

@@ -3,7 +3,6 @@ import searchCache from "@/assets/js/searchCache";
 
 export default createStore({
   state: {
-    user: {},
     searchHistory: searchCache.getAll()
   },
   mutations: {
