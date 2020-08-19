@@ -10,6 +10,8 @@ addons:
 install:
   "npm install"
 script:
+  - "npm run build"
+after_success:
   - ./script/deploy.sh
 
 

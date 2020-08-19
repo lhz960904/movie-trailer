@@ -7,4 +7,4 @@ set -e
 npm run build
 
 # 将dist文件发送到远程
-sshpass -p ${serverPass} scp -o stricthostkeychecking=no -r dist/ root@${serverIP}:/home/web/
+sshpass -p ${serverPass} scp -o stricthostkeychecking=no -r dist/ root@${serverIP}:/home/web/movie-trailer
