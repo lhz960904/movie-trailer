@@ -10,6 +10,8 @@
 
   - 电影数据爬虫[movie-crawler](https://github.com/lhz960904/movie-crawler) (python爬取，已废弃)
 
+  - Flutter项目 [链接](https://github.com/liangxiaobo/flutter-movie-trailer)
+
 ### 扫码体验
 
 ![](./images/qrcode.png)
