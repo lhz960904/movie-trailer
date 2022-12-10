@@ -1,53 +1,24 @@
 {
-  "name": "movie-trailer-next",
-  "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
-  },
-  "dependencies": {
-    "axios": "^0.19.2",
-    "better-scroll": "^2.0.0-beta.10",
-    "dplayer": "^1.26.0",
-    "vue": "^3.0.0-rc.5",
-    "vue-class-component": "^7.2.3",
-    "vue-property-decorator": "^8.4.2",
-    "vue-router": "^4.0.0-alpha.6",
-    "vue3-lazy": "^1.0.0-alpha.1",
-    "vuex": "^4.0.0-alpha.1"
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
   },
   "devDependencies": {
-    "@types/better-scroll": "^1.12.2",
-    "@types/dplayer": "^1.25.0",
-    "@typescript-eslint/eslint-plugin": "^2.33.0",
-    "@typescript-eslint/parser": "^2.33.0",
-    "@vue/cli-plugin-eslint": "~4.4.0",
-    "@vue/cli-plugin-router": "~4.4.0",
-    "@vue/cli-plugin-typescript": "~4.4.0",
-    "@vue/cli-plugin-vuex": "~4.4.0",
-    "@vue/cli-service": "~4.4.0",
-    "@vue/compiler-sfc": "^3.0.0-beta.1",
-    "@vue/eslint-config-prettier": "^6.0.0",
-    "@vue/eslint-config-typescript": "^5.0.2",
-    "eslint": "^6.8.0",
-    "eslint-plugin-prettier": "^3.1.3",
-    "eslint-plugin-vue": "^7.0.0-alpha.0",
-    "lint-staged": "^9.5.0",
-    "prettier": "^1.19.1",
-    "stylus": "^0.54.7",
-    "stylus-loader": "^3.0.2",
-    "typescript": "~3.9.3",
-    "vue-cli-plugin-vue-next": "~0.1.3"
+    "nuxt": "3.0.0"
   },
-  "gitHooks": {
-    "pre-commit": "lint-staged"
-  },
-  "lint-staged": {
-    "*.{js,jsx,vue,ts,tsx}": [
-      "vue-cli-service lint",
-      "git add"
-    ]
+  "dependencies": {
+    "@better-scroll/core": "^2.5.0",
+    "@better-scroll/observe-dom": "^2.5.0",
+    "@better-scroll/pull-up": "^2.5.0",
+    "axios": "^1.2.1",
+    "http-proxy": "^1.18.1",
+    "http-proxy-middleware": "^2.0.6",
+    "nuxt-proxy": "^0.3.4",
+    "stylus": "^0.59.0",
+    "vue3-lazy": "1.0.0-alpha.1"
   }
 }
