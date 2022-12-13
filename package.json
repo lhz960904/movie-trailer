@@ -8,6 +8,7 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
+    "@types/dplayer": "^1.25.2",
     "nuxt": "3.0.0"
   },
   "dependencies": {
@@ -15,6 +16,7 @@
     "@better-scroll/observe-dom": "^2.5.0",
     "@better-scroll/pull-up": "^2.5.0",
     "axios": "^1.2.1",
+    "dplayer": "^1.27.0",
     "http-proxy": "^1.18.1",
     "http-proxy-middleware": "^2.0.6",
     "nuxt-proxy": "^0.3.4",

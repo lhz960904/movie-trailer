@@ -11,7 +11,9 @@ import BScroll from "@better-scroll/core";
 import PullUp from "@better-scroll/pull-up";
 import ObserveDOM from "@better-scroll/observe-dom";
 
-BScroll.use(ObserveDOM).use(PullUp);
+if (!process.server) {
+  BScroll.use(ObserveDOM).use(PullUp);
+}
 
 const props = defineProps({
   data: {
