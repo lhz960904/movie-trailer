@@ -22,22 +22,18 @@ type OuterData<T> = Ref<{
  * @param outerState 调用时的state，用于改变page
  * @param fetch 请求函数
  */
-export default function useScrollMore<T>(
-  data: OuterData<T>,
-  outerState: OuterState,
-  fetch: () => Promise<void>
-) {
+export default function useScrollMore<T>(data: OuterData<T> | Ref<null>, outerState: OuterState, fetch: () => Promise<void>) {
   const state: ScrollMoreState<T> = reactive({
     list: [],
     loading: false,
     noMore: computed(() => {
-      return data.value.total <= state.list.length && data.value.total !== 0;
+      return (data.value?.total || 0) <= state.list.length && data.value?.total !== 0;
     }),
   });
 
   const loadMore = async () => {
     const { list } = state;
-    const { total } = data.value;
+    const total = data.value?.total || 0;
     if (list.length >= total) return;
     outerState.page += 1;
     state.loading = true;
@@ -46,7 +42,7 @@ export default function useScrollMore<T>(
   };
 
   watch(data, (newVal) => {
-    state.list = state.list.concat(newVal.list);
+    state.list = state.list.concat(newVal?.list || []);
   });
 
   const refresh = () => {

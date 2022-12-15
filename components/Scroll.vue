@@ -15,6 +15,8 @@ if (!process.server) {
   BScroll.use(ObserveDOM).use(PullUp);
 }
 
+const emit = defineEmits(["pulling-up"]);
+
 const props = defineProps({
   data: {
     type: Array,
@@ -34,6 +36,7 @@ const initScroll = () => {
   if (!wrapper.value) {
     return;
   }
+  // @ts-ignore
   scroll.value = new BScroll(wrapper.value, {
     bounce: false,
     click: true,
