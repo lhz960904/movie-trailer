@@ -6,6 +6,7 @@ export interface Movie {
   poster: string;
   cover: string;
   duration: string;
+  categories: string[];
   pubdate: string;
   rate: string;
   isPlay: "0" | "1";

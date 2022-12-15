@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { Movie } from "@/types/movie";
-import { Response } from "@/types/response";
 import { SizerState } from "@/types/sizer";
 
 const state: Required<SizerState> = reactive({
@@ -12,18 +11,13 @@ const state: Required<SizerState> = reactive({
 const params = computed(() => ({
   status: state.status,
   rate: state.status !== "0" ? JSON.stringify(state.rate) : undefined,
-  categories: !state.categories.length
-    ? undefined
-    : JSON.stringify(state.categories),
+  categories: !state.categories.length ? undefined : JSON.stringify(state.categories),
 }));
 
 const initialData: Movie[] = [];
-const { data, pending, refresh } = useFetch<Response<Movie[]>>("/api/movie", {
-  server: false,
-  params,
-});
+const { data, pending, refresh } = useFetch<Movie[]>("/api/movie", { params });
 
-const movieList = computed(() => data.value?.data || []);
+const movieList = computed(() => data.value || []);
 
 const handleSizerChange = (item: SizerState) => {
   for (const key in item) {

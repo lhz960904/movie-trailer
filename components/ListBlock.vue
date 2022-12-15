@@ -24,25 +24,16 @@ const selectItem = (id: string) => router.push(`/movie/${id}`);
       <i class="iconfont icon-right" @click="goMore()" />
     </div>
     <div v-if="movies.length && !loading" class="list">
-      <div
-        v-for="item in movies"
-        :key="item.id"
-        class="item"
-        @click="selectItem(item.id)"
-      >
+      <div v-for="item in movies" :key="item.id" class="item" @click="selectItem(item.id)">
         <div class="image">
-          <img v-lazy="item.poster" />
+          <img :src="item.poster" />
           <em v-if="item.isPlay === '1'" class="rate">
             {{ item.rate }}
           </em>
         </div>
         <p class="title">{{ item.title }}</p>
       </div>
-      <div
-        v-for="idx in 8 - movies.length"
-        :key="idx"
-        class="item placeholder"
-      />
+      <div v-for="idx in 8 - movies.length" :key="idx" class="item placeholder" />
     </div>
     <div v-if="!movies.length && !loading">
       <img src="~/assets/images/noresult.png" width="100" height="100" />

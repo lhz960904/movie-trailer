@@ -1,7 +1,5 @@
 <script lang="ts" setup>
-import DPlayer from "dplayer";
 import { Movie } from "~/types/movie";
-import { Response } from "~/types/response";
 
 interface MovieData {
   movie: Movie;
@@ -17,42 +15,37 @@ const state = reactive({
   isShow: false,
 });
 
-const reqUrl = computed(() => `/api/movie/${route.params.id}`);
-const { data, pending, refresh } = useFetch<Response<MovieData>>(reqUrl, {
-  server: false,
-});
+const { data, pending, refresh } = useFetch<MovieData>(`/api/movie/${route.params.id}`, { server: false });
 
 watch(data, () => {
-  if (!playerRef.value || !data.value?.data) return;
-  const { movie } = data.value?.data;
-  new DPlayer({
-    container: playerRef.value,
-    video: {
-      url: movie.video,
-      pic: movie.cover,
-    },
+  if (!playerRef.value || !data.value || process.server) return;
+  const { movie } = data.value;
+  import("dplayer").then(({ default: DPlayer }) => {
+    new DPlayer({
+      container: playerRef.value!,
+      video: {
+        url: movie.video,
+        pic: movie.cover,
+      },
+    });
   });
 });
 
 const movieDesc = computed<string>(() => {
   if (!data.value) return "";
-  const { movie } = data.value.data;
+  const { movie } = data.value;
   const duration = movie.duration || movie.pubdate.replace("(中国大陆)", "");
   const rate = movie.rate ? `${movie.rate}分` : "即将上映";
-  const categories = movie.movieTypes.map(({ name }) => name).join("/");
+  const categories = movie.categories
+    .map((name) => name)
+    .filter(Boolean)
+    .join("/");
   return `${rate} · ${categories} · ${duration}`;
 });
 
 const toggleLayer = () => {
   state.isShow = !state.isShow;
 };
-
-// watch(
-//   () => route.params.id,
-//   () => {
-//     refresh();
-//   }
-// );
 
 const goToDetail = (id: string) => {
   router.replace(`/movie/${id}`);
@@ -63,12 +56,13 @@ const back = () => {
 };
 
 const renderMovieTypes = (types: Movie["movieTypes"], symbol = "/") => {
-  return types.map((it) => it.name).join(symbol);
+  return types?.map((it) => it.name).join(symbol);
 };
 
-const movie = computed(() => data.value?.data.movie);
-const relativeMovies = computed(() => data.value?.data.relativeMovies);
+const movie = computed(() => data.value?.movie);
+const relativeMovies = computed(() => data.value?.relativeMovies);
 </script>
+？
 
 <template>
   <div class="movie-page">
@@ -91,7 +85,7 @@ const relativeMovies = computed(() => data.value?.data.relativeMovies);
           <h1 class="text">相关推荐</h1>
           <div class="list">
             <div v-for="item in relativeMovies" :key="item.id" class="item" @click="goToDetail(item.id)">
-              <img v-lazy="item.poster" width="56" height="80" />
+              <img :src="item.poster" width="56" height="80" />
               <div class="desc">
                 <p class="title">{{ item.title }}</p>
                 <div v-if="item.isPlay === '1'" class="rate">
@@ -144,7 +138,7 @@ const relativeMovies = computed(() => data.value?.data.relativeMovies);
             </div>
             <div class="casts">
               <div v-for="item in movie.casts" :key="item.name" class="cast">
-                <img v-lazy="item.avatar" class="img" />
+                <img :src="item.avatar" class="img" />
                 <h3 class="name">{{ item.name }}</h3>
               </div>
             </div>

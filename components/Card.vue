@@ -2,7 +2,7 @@
   <div class="card" :class="{ 'rank-card': isRank }" @click="onClick()">
     <p v-if="isRank" class="rank-text" :class="'rank-' + sort">{{ sort }}</p>
     <div class="image">
-      <img v-lazy="movie.poster" />
+      <img :src="movie.poster" />
     </div>
     <div class="descript">
       <h1 class="title">{{ movie.title }}</h1>

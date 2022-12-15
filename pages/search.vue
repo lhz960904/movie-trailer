@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { Response } from "@/types/response";
 import { Movie } from "@/types/movie";
 
 const store = $(useStore());
@@ -16,11 +15,11 @@ const state = reactive<{
   movieList: [],
 });
 
-const { data } = useFetch<Response<{ name: string }[]>>("/api/keyword", { server: false });
-const hotSearchKeys = data.value?.data;
+const { data } = useFetch<{ name: string }[]>("/api/keyword");
+const hotSearchKeys = data.value;
 
 const getMovieList = () =>
-  $fetch<Response<Movie[]>>("/api/movie/search", {
+  $fetch<Movie[]>("/api/movie/search", {
     params: { keyword: state.keyword },
   });
 
@@ -30,7 +29,7 @@ const search = useDebounce(() => {
     state.isShow = false;
   } else {
     getMovieList().then((res) => {
-      state.movieList = res.data;
+      state.movieList = res;
       state.isShow = true;
       saveSearchHistory(state.keyword);
     });

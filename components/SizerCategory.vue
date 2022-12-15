@@ -1,21 +1,16 @@
 <script lang="ts" setup>
-import { Response } from "@/types/response";
 import { SizerState } from "@/types/sizer";
 
 const props = defineProps<{ sizerState: SizerState }>();
 const emit = defineEmits(["change"]);
 
-const categories = toRef<SizerState, "categories">(
-  props.sizerState,
-  "categories"
-);
+const categories = toRef<SizerState, "categories">(props.sizerState, "categories");
 
 const state = reactive({
   selectedKeys: categories.value || [],
 });
 
-const { data } =
-  useFetch<Response<{ id: number; name: string }[]>>("/api/category");
+const { data } = useFetch<{ id: number; name: string }[]>("/api/category");
 
 const selectItem = (id: number) => {
   const arr = [...state.selectedKeys];
@@ -32,7 +27,7 @@ const confirm = () => {
   emit("change", { categories: state.selectedKeys });
 };
 
-const categoryList = computed(() => data.value?.data);
+const categoryList = computed(() => data.value);
 </script>
 
 <template>
