@@ -1,16 +1,16 @@
-# movie-trailer 
+# movie-trailer
 
 ![](https://travis-ci.com/lhz960904/movie-trailer.svg?branch=master)
 
+> Vue 全家桶开发的电影预告片 webAPP，可以查看正在热映与即将上映的电影信息和短片。
 
-> Vue全家桶开发的电影预告片webAPP，可以查看正在热映与即将上映的电影信息和短片。
+**相关项目**:
 
-**相关项目**: 
-  - 后台API支持[movie-api](https://github.com/lhz960904/movie-api) (已升级成Egg)
+- 后台 API 支持[movie-api](https://github.com/lhz960904/movie-api) (已升级成 Egg)
 
-  - 电影数据爬虫[movie-crawler](https://github.com/lhz960904/movie-crawler) (python爬取，已废弃)
+- 电影数据爬虫[movie-crawler](https://github.com/lhz960904/movie-crawler) (python 爬取，已废弃)
 
-  - Flutter项目 [链接](https://github.com/liangxiaobo/flutter-movie-trailer)
+- Flutter 项目 [链接](https://github.com/liangxiaobo/flutter-movie-trailer)
 
 ### 扫码体验
 
@@ -22,28 +22,30 @@
 
 ![效果图](./images/effect2.gif)
 
-
-
 ### 更新日志
+
+**V4.0.0**
+
+- 使用 Nuxt3
+- 使用`vercel`实现持续集成，自动发布
 
 **V3.0.0**
 
-- 使用vue3 + TypeScript进行重构
+- 使用 vue3 + TypeScript 进行重构
 - 使用`travis`实现持续集成，自动发布
 
 **V2.0.0**
 
 - 尝试使用持续集成工具`travis`进行打包测试(有待继续探索、实现自动发布)
-- 评分区间筛选器从 *点击* 改为 *手指滑动* 、提升体验
-- ESLint加强增加`@vue/standard`、对组件重新、抽离全局组件
-- `axios`进行封装，处理不同的返回值code、增加`error`页面
+- 评分区间筛选器从 _点击_ 改为 _手指滑动_ 、提升体验
+- ESLint 加强增加`@vue/standard`、对组件重新、抽离全局组件
+- `axios`进行封装，处理不同的返回值 code、增加`error`页面
 - 脚手架升级`vue-cli3`
 
 **V1.0.0**
 
 - 首页推荐正在上映、即将上映的电影
 - 通过分类、上映状态、评分区间进行筛选电影
-- 通过搜索进行筛选电影、搜索历史通过localStorage存储
+- 通过搜索进行筛选电影、搜索历史通过 localStorage 存储
 - 个人中心页面，注册和登录
 - 电影详情短片播放、相关电影推荐、剧情简介
-
