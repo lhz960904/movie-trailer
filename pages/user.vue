@@ -1,15 +1,7 @@
 <script lang="ts" setup>
-import { Response } from "~/types/response";
-
 const router = useRouter();
 
-const { data } = useFetch<Response<{ userName: string; email: string }>>("/api/user/getInfo", { server: false });
-
-console.log("data", data);
-
-if (data.value?.code !== 200) {
-  router.replace("/login");
-}
+const { data } = useFetch<{ userName: string; email: string }>("/api/user/getInfo");
 
 const logout = async () => {
   await $fetch("/api/user/logout", { method: "post" });
@@ -25,7 +17,7 @@ const redirect = (idx: number) => {
   location.href = url[idx];
 };
 
-const user = data.value?.data;
+const user = computed(() => data.value);
 </script>
 
 <template>
