@@ -3,8 +3,8 @@ import { Movie } from "~/types/movie";
 
 export const ossStore = new OSS({
   region: "oss-cn-hangzhou",
-  accessKeyId: "LTAI5tHf6iAgityVBwrjWSvq",
-  accessKeySecret: "Iir8GqjslMdoH3cfHOba6AzxKiUh0U",
+  accessKeyId: process.env.ACCESS_KEY_ID as string,
+  accessKeySecret: process.env.ACCESS_KEY_SECRET as string,
   bucket: "cq-movie",
 });
 
