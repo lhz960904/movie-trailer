@@ -1,7 +1,10 @@
 # movie-trailer 
 
-![](https://travis-ci.com/lhz960904/movie-trailer.svg?branch=master)
 
+> [!CAUTION]  
+> 由于项目复杂度较低、技术栈落后，后续不会继续维护此项目
+
+![](https://travis-ci.com/lhz960904/movie-trailer.svg?branch=master)
 
 > Vue全家桶开发的电影预告片webAPP，可以查看正在热映与即将上映的电影信息和短片。
 
